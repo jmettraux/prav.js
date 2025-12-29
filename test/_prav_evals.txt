@@ -27,21 +27,8 @@ role:alpha&is:omega ⟶   { role: 'alpha', is: 'omega' } ⟶   true
 role:alpha&is:omega ⟶   { role: 'alpha', is: 'alpha' } ⟶   false
 role:alpha&is:omega ⟶   { role: 'bravo', is: 'omega' } ⟶   false
 
-#a:alpha&b:bravo|c:charly ⟶   \
-#  ["OR", \
-#    ["AND", ["PAT", "a", "alpha"], ["PAT", "b", "bravo"]], \
-#    ["PAT", "c", "charly"]]
-#
-#role:alpha&is:omega ⟶   \
-#  ["AND", ["PAT", "role", "alpha"], ["PAT", "is", "omega"]]
-#a:alpha&b:bravo|c:charly ⟶   \
-#  ["OR", \
-#    ["AND", ["PAT", "a", "alpha"], ["PAT", "b", "bravo"]], \
-#    ["PAT", "c", "charly"]]
-#a:alpha&(b:bravo|c:charly) ⟶   \
-#  ["AND", \
-#    ["PAT", "a", "alpha"], \
-#    ["OR", ["PAT", "b", "bravo"], ["PAT", "c", "charly"]]]
+a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'bravo', c: 'c' } ⟶   true
+a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'b', c: 'c' } ⟶   false
 
 # vim: syntax=arrowy
 
