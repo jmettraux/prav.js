@@ -92,7 +92,12 @@ var Prav = (function() {
   //
   // protected functions
 
-  let isHash = function(x) { return (typeof x === 'object'); };
+  //let isH = function(x) {
+  //  return (typeof x === 'object'); };
+  //let hasKey = function(h, k) {
+  //  return (typeof h === 'object') && h.hasOwnProperty(k); };
+  let fetch = function(h, k) {
+    return (typeof h === 'object') && h.hasOwnProperty(k) && h[k]; };
 
   const EVALS = {};
 
@@ -100,13 +105,10 @@ var Prav = (function() {
     function(tree, ctx) { return tree[1]; };
 
   EVALS.PAT = function(tree, ctx) {
-    let tl = tree.length;
-    let ks = tree.slice(1, tl - 1);
-    let r = ks.reduce(
-      function(x, k) { return isHash(x) && x.hasOwnProperty(k) ? x[k] : null; },
-      ctx);
-    return r === tree[tl - 1];
-  };
+    let ks = tree.slice(1);
+    let rk = ks.pop();
+    let v = ks.reduce(function(r, k) { return fetch(r, k); }, ctx);
+    return v === rk || fetch(v, rk); };
 
   EVALS.AND = function(tree, ctx) {
     return tree.slice(1).reduce(
