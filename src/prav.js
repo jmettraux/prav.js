@@ -64,15 +64,14 @@ var PravParser = Jaabro.makeParser(function() {
 
   function rewrite_pat(t) {
     let r = [ 'PAT' ];
-    for (let i = 0, l = t.children.length; i < l; i = i + 2) {
-      r.push(rewrite(t.children[i])); }
+    t.subgather().forEach(function(c) { r.push(rewrite(c)); });
     return r; }
 
   function _rewrite_seq(head, t) {
     if (t.children.length === 1) return rewrite(t.children[0]);
-    let a = [ head ];
-    t.children.forEach(function(c) { a.push(rewrite(c)); });
-    return a; }
+    let r = [ head ];
+    t.subgather().forEach(function(c) { r.push(rewrite(c)); });
+    return r; }
 
   function rewrite_adn(t) { return _rewrite_seq('AND', t); }
   function rewrite_oro(t) { return _rewrite_seq('OR', t); }
@@ -92,38 +91,31 @@ var Prav = (function() {
   //
   // protected functions
 
-  //let isH = function(x) {
-  //  return (typeof x === 'object'); };
-  //let hasKey = function(h, k) {
-  //  return (typeof h === 'object') && h.hasOwnProperty(k); };
   let fetch = function(h, k) {
     return (typeof h === 'object') && h.hasOwnProperty(k) && h[k]; };
 
   const EVALS = {};
 
   EVALS.BOO = EVALS.NUM = EVALS.STR = EVALS.NUL =
-    function(tree, ctx) { return tree[1]; };
+    function(cn, ctx) { return cn[0]; };
 
-  EVALS.PAT = function(tree, ctx) {
-    let ks = tree.slice(1);
-    let rk = ks.pop();
-    let v = ks.reduce(function(r, k) { return fetch(r, k); }, ctx);
+  EVALS.PAT = function(cn, ctx) {
+    let rk = cn.pop();
+    let v = cn.reduce(function(r, k) { return fetch(r, k); }, ctx);
     return v === rk || fetch(v, rk); };
 
-  EVALS.AND = function(tree, ctx) {
-    return tree.slice(1).reduce(
-      function(x, child) {
-        if ( ! x) return false;
-        if ( ! _eval(child, ctx)) return false;
-        return true; },
-      true); };
+  EVALS.AND = function(cn, ctx) {
+    for (let i = 0, l = cn.length; i < l; i++) {
+      if ( ! _eval(cn[i], ctx)) return false; }
+    return true; };
 
-  EVALS.OR = function(tree, ctx) {
-    return false; }
-    //return !! tree.slice(1).find(
-    //  function(c) { return !! _eval(c, ctx) }); };
+  EVALS.OR = function(cn, ctx) {
+    return true; };
 
-  let _eval = function(tree, ctx) { return EVALS[tree[0]](tree, ctx); };
+  let _eval = function(tree, ctx) {
+    let e; try { e = EVALS[tree[0]]; } catch(err) {}
+    if ( ! e) throw new Error(`Prav failed to eval ${JSON.stringify(tree)}`);
+    return e(tree.slice(1), ctx); };
 
   //
   // public functions
