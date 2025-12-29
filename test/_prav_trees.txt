@@ -1,7 +1,12 @@
 
 12,000,1 ⟶   ∅  # does not parse
 
-alpha&omega ⟶   [ "num", "987" ]
+role:approver ⟶   [ 'COL', 'role', 'approver' ]
+
+role:alpha&is:omega ⟶   ["AND", ["COL", "role", "alpha"], ["COL", "is", "omega"]]
+a:alpha&b:bravo|c:charly ⟶   ["AND", ["COL", "a", "alpha"], ["OR", ["COL", "b", "bravo"], ["COL", "c", "charly"]]]
+
+
 
 # vim: syntax=arrowy
 

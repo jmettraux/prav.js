@@ -26,12 +26,21 @@ group 'prav.js' do
 
   group 'parsing' do
 
-    test 'lookup failure' do
+    PRAV_TREES.each do |code, tree|
 
-      PRAV_TREES.each do |code, tree|
+      if tree == '∅'
 
-        t = @browser.eval("PravParser.parse(\"#{code}\")")
-        p [ code, tree, t ]
+        test ">#{code}< does not parse" do
+
+          assert_nil @browser.eval("PravParser.parse(\"#{code}\")")
+        end
+
+      else
+
+        test ">#{code}< parses" do
+
+          assert @browser.eval("PravParser.parse(\"#{code}\")"), eval(tree)
+        end
       end
     end
   end

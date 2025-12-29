@@ -34,14 +34,30 @@ var PravParser = Jaabro.makeParser(function() {
 
   function par(i) { return seq('par', i, pa, adn, pz); }
 
-  function exp(i) { return alt('exp', i, par, col, sca); }
+  function exp(i) { return alt(null, i, par, col, sca); }
 
   function cmp(i) { return jseq('cmp', i, exp, cm); }
   function oro(i) { return jseq('oro', i, cmp, pi); }
   function adn(i) { return jseq('adn', i, oro, am); }
 
+  function root(i) { return seq(null, i, adn); }
 
   // rewrite
+
+  function rewrite_lab(t) { return t.strinp(); }
+
+  function rewrite_col(t) {
+    return [ 'COL', rewrite(t.children[0]), rewrite(t.children[2]) ]; }
+
+  function _rewrite_seq(head, t) {
+    if (t.children.length === 1) return rewrite(t.children[0]);
+    let a = [ head ];
+    t.children.forEach(function(c) { a.push(rewrite(c)); });
+    return a; }
+
+  function rewrite_adn(t) { return _rewrite_seq('AND', t); }
+  function rewrite_oro(t) { return _rewrite_seq('OR', t); }
+  function rewrite_cmp(t) { return _rewrite_seq('CMP', t); } // FIXME
 
 //  function rewrite_cmp(t) {
 //
