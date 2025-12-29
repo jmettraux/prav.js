@@ -19,7 +19,7 @@ hi! aroArrow cterm=NONE ctermfg=blue ctermbg=16
 "hi! aroContext cterm=NONE ctermfg=darkgrey ctermbg=16
 
 syn match aroComment '\v^ *#[^\n]*\n'
-syn match aroCode '\v^[^\U27f6]+(%U27f6)@='
+syn match aroCode '\v^[^\U27f6#]+(%U27f6)@='
 syn match aroArrow '\v%U27f6'
 "syn match aroContext '\v(%U27f6)@<=[^\U27f6]+(%U27f6)@='
 "syn match aroOutcome '\v(%U27f6)@<=[^\U27f6]+$'
