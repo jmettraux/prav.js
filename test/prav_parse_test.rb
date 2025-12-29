@@ -5,16 +5,16 @@
 # Mon Dec 29 10:59:39 JST 2025
 #
 
-group 'prav.js' do
+group 'PravParser' do
 
   PRAV_TREES =
     File.read('test/_prav_trees.txt')
       .gsub(/\\\n/, '')
       .split("\n")
-      .map(&:strip)
-      .map { |l| m = l.match(/^(.*)(#.*)$/); m ? m[1].strip : l }
+      .collect(&:strip)
+      .collect { |l| m = l.match(/^(.*)(#.*)$/); m ? m[1].strip : l }
       .select { |l| l.length > 0 && l[0, 1] != '#' }
-      .map { |l| l.split(/\s*⟶\s*/) }
+      .collect { |l| l.split(/\s*⟶\s*/) }
 
   setup do
 

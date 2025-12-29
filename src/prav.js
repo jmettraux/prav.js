@@ -92,12 +92,31 @@ var Prav = (function() {
   //
   // protected functions
 
+  const EVALS = {};
+    //
+  EVALS._ = function(tree, ctx) { return tree[1]; };
+  EVALS.BOO = EVALS._;
+  EVALS.NUM = EVALS._;
+  EVALS.STR = EVALS._;
+  EVALS.NUL = EVALS._;
+
+  let _eval = function(tree, ctx) { return EVALS[tree[0]](tree, ctx); };
+
   //
   // public functions
 
   this.parse = function(s) {
 
     return PravParser.parse(s);
+  };
+
+  this.eval = function(code, ctx) {
+
+    let t = Array.isArray(code) ? code : this.parse(code);
+
+    if ( ! t) throw new Error(`Prav failed to parse >${code}<`);
+
+    return _eval(t, ctx);
   };
 
   //

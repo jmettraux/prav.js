@@ -55,5 +55,7 @@ class Probatio::Section
 
     nil # so that it fails in the test and not in the setup or before...
   end
+
+  #def j(o); JSON.dump(o); end
 end
 

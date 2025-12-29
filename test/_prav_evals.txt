@@ -1,0 +1,34 @@
+
+12 ⟶   12
+12.12 ⟶   12.12
+true ⟶   true
+false ⟶   false
+null ⟶   nil
+"alpha" ⟶   'alpha'
+'bravo' ⟶   'bravo'
+
+#role:approver ⟶   [ 'PAT', 'role', 'approver' ]
+#path:to:target ⟶   [ 'PAT', 'path', 'to', 'target' ]
+#
+#status:blue&false ⟶   ["AND", ["PAT", "status", "blue"], ["BOO", false]]
+#
+#role:alpha&is:omega ⟶   \
+#  ["AND", ["PAT", "role", "alpha"], ["PAT", "is", "omega"]]
+#a:alpha&b:bravo|c:charly ⟶   \
+#  ["OR", \
+#    ["AND", ["PAT", "a", "alpha"], ["PAT", "b", "bravo"]], \
+#    ["PAT", "c", "charly"]]
+#
+#role:alpha&is:omega ⟶   \
+#  ["AND", ["PAT", "role", "alpha"], ["PAT", "is", "omega"]]
+#a:alpha&b:bravo|c:charly ⟶   \
+#  ["OR", \
+#    ["AND", ["PAT", "a", "alpha"], ["PAT", "b", "bravo"]], \
+#    ["PAT", "c", "charly"]]
+#a:alpha&(b:bravo|c:charly) ⟶   \
+#  ["AND", \
+#    ["PAT", "a", "alpha"], \
+#    ["OR", ["PAT", "b", "bravo"], ["PAT", "c", "charly"]]]
+
+# vim: syntax=arrowy
+
