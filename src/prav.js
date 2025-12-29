@@ -93,12 +93,25 @@ var Prav = (function() {
   // protected functions
 
   const EVALS = {};
-    //
+
   EVALS._ = function(tree, ctx) { return tree[1]; };
   EVALS.BOO = EVALS._;
   EVALS.NUM = EVALS._;
   EVALS.STR = EVALS._;
   EVALS.NUL = EVALS._;
+
+  EVALS.PAT = function(tree, ctx) {
+    return tree.slice(1).reduce(
+      function(x, key) { return x.hasOwnProperty(key) ? x[key] : false; },
+      ctx); };
+
+  EVALS.AND = function(tree, ctx) {
+    return tree.slice(1).reduce(
+      function(x, child) {
+        if ( ! x) return false;
+        if ( ! _eval(child, ctx)) return false;
+        return true; },
+      true); };
 
   let _eval = function(tree, ctx) { return EVALS[tree[0]](tree, ctx); };
 
