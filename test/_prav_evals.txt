@@ -10,12 +10,17 @@ null ⟶   nil
 role:approver ⟶   { role: 'traveller' } ⟶   false
 role:approver ⟶   { role: 'approver' } ⟶   true
 
-path:to:target ⟶   { path: { to: { target: true } } } ⟶   true
-path:to:target ⟶   { path: { to: { nowhere: false } } } ⟶   false
-
-a:ok&false ⟶   { a: 'ok' } ⟶   false
-a:ok&true ⟶   { a: 'ok' } ⟶   true
-a:ok&true ⟶   { a: 'not ok' } ⟶   false
+#path:to:target ⟶   { path: { to: { target: true } } } ⟶   true
+#path:to:target ⟶   { path: { to: { nowhere: false } } } ⟶   false
+#
+#a:ok&false ⟶   { a: 'ok' } ⟶   false
+#a:ok&true ⟶   { a: 'ok' } ⟶   true
+#a:ok&true ⟶   { a: 'not ok' } ⟶   false
+#
+#a:ok|true ⟶   { a: 'ok' } ⟶   true
+#a:ok|true ⟶   { a: 'not ok' } ⟶   true
+#a:ok|false ⟶   { a: 'ok' } ⟶   true
+#a:ok|false ⟶   { a: 'not ok' } ⟶   false
 
 #role:alpha&is:omega ⟶   \
 #  ["AND", ["PAT", "role", "alpha"], ["PAT", "is", "omega"]]

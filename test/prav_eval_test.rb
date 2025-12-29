@@ -32,12 +32,14 @@ group 'Prav' do
 
     PRAV_EVALS.each do |code, ctx, expected|
 
-      test ">#{code}< evaluates to #{expected.inspect}" do
+      test ">#{code}< evaluates to #{expected}" do
 
-        puts '---'; p code; p ctx; p expected
-        #puts "Prav.eval(#{JSON.dump(code)}, #{JSON.dump(ctx)})"
-        r = @browser.eval  "Prav.eval(#{JSON.dump(code)}, #{JSON.dump(ctx)})"
-        p r
+        co = JSON.dump(code)
+        ct = ctx
+
+        r = @browser.eval("Prav.eval(#{co}, #{ct})")
+
+        assert r, eval(expected)
       end
     end
   end

@@ -113,6 +113,11 @@ var Prav = (function() {
         return true; },
       true); };
 
+  EVALS.OR = function(tree, ctx) {
+    return false; }
+    //return !! tree.slice(1).find(
+    //  function(c) { return !! _eval(c, ctx) }); };
+
   let _eval = function(tree, ctx) { return EVALS[tree[0]](tree, ctx); };
 
   //
