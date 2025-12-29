@@ -6,6 +6,10 @@ role:approver ⟶   [ 'COL', 'role', 'approver' ]
 role:alpha&is:omega ⟶   \
   ["AND", ["COL", "role", "alpha"], ["COL", "is", "omega"]]
 a:alpha&b:bravo|c:charly ⟶   \
+  ["OR", \
+    ["AND", ["COL", "a", "alpha"], ["COL", "b", "bravo"]], \
+    ["COL", "c", "charly"]]
+a:alpha&(b:bravo|c:charly) ⟶   \
   ["AND", \
     ["COL", "a", "alpha"], \
     ["OR", ["COL", "b", "bravo"], ["COL", "c", "charly"]]]

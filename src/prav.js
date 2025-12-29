@@ -32,17 +32,19 @@ var PravParser = Jaabro.makeParser(function() {
   function col(i) { return seq('col', i, lab, co, lab); }
   function sca(i) { return alt('sca', i, num, str, boo, nul); }
 
-  function par(i) { return seq('par', i, pa, adn, pz); }
+  function par(i) { return seq('par', i, pa, cmp, pz); }
 
   function exp(i) { return alt(null, i, par, col, sca); }
 
-  function cmp(i) { return jseq('cmp', i, exp, cm); }
-  function oro(i) { return jseq('oro', i, cmp, pi); }
-  function adn(i) { return jseq('adn', i, oro, am); }
+  function adn(i) { return jseq('adn', i, exp, am); }
+  function oro(i) { return jseq('oro', i, adn, pi); }
+  function cmp(i) { return jseq('cmp', i, oro, cm); }
 
-  function root(i) { return seq(null, i, adn); }
+  function root(i) { return seq(null, i, cmp); }
 
   // rewrite
+
+  function rewrite_par(t) { return rewrite(t.children[1]); }
 
   function rewrite_lab(t) { return t.strinp(); }
 
@@ -57,80 +59,8 @@ var PravParser = Jaabro.makeParser(function() {
 
   function rewrite_adn(t) { return _rewrite_seq('AND', t); }
   function rewrite_oro(t) { return _rewrite_seq('OR', t); }
-  function rewrite_cmp(t) { return _rewrite_seq('CMP', t); } // FIXME
+  function rewrite_cmp(t) { return _rewrite_seq('CMP', t); } // FIXME ><=~ ...
 
-//  function rewrite_cmp(t) {
-//
-//    if (t.children.length === 1) return rewrite(t.children[0]);
-//
-//    return [
-//      'cmp',
-//      t.children[1].children[0].strinp(),
-//      rewrite(t.children[0]),
-//      rewrite(t.children[1].children[1])
-//    ];
-//  }
-//
-//  const MODS = { '-': 'opp', '/': 'inv' };
-//
-//  function rewrite_add(t) {
-//
-//    if (t.children.length === 1) return rewrite(t.children[0]);
-//
-//    let cn = t.children.slice(); // dup array
-//    let a = [ t.name === 'add' ? 'plus' : 'MUL' ];
-//    if (cn[1] && cn[1].strinp() === '&') a = [ 'amp' ]
-//    let mod = null;
-//    let c = null;
-//
-//    while (c = cn.shift()) {
-//      let v = rewrite(c);
-//      if (mod) v = [ mod, v ];
-//      a.push(v);
-//      c = cn.shift();
-//      if ( ! c) break;
-//      mod = MODS[c.strinp()];
-//    }
-//
-//    return a;
-//  }
-//  let rewrite_mul = rewrite_add;
-//
-//  function rewrite_fun(t) {
-//
-//    let a = [ t.children[0].strinp() ];
-//    t.children[1].children.forEach(function(c) {
-//      if (c.name) a.push(rewrite(c));
-//    });
-//
-//    a._source = t.strinp();
-//
-//    return a;
-//  }
-//
-//  function rewrite_exp(t) { return rewrite(t.children[0]); }
-//
-//  function rewrite_par(t) { return rewrite(t.children[1]); }
-//
-//  function rewrite_arr(t) {
-//    let a = [ 'arr' ];
-//    for (let i = 0, l = t.children.length; i < l; i++) { let c = t.children[i];
-//      if (c.name) a.push(rewrite(c)); }
-//    return a; }
-//
-//  function rewrite_var(t) { return [ 'var', t.strinp() ]; }
-//
-//  function rewrite_number(t) { return [ 'num', t.strinp() ]; }
-//
-//  function rewrite_string(t) {
-//
-//    let s = t.children[0].strinp();
-//    let q = s[0];
-//    s = s.slice(1, -1);
-//
-//    return [
-//      'str', q === '"' ? s.replace(/\\\"/g, '"') : s.replace(/\\'/g, "'") ];
-//  }
 }); // end PravParser
 
 
