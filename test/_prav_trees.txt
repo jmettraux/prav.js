@@ -3,11 +3,20 @@
 
 12 ⟶   [ 'NUM', 12 ]
 12.12 ⟶   [ 'NUM', 12.12 ]
-"alpha" ⟶   [ 'STR', "alpha" ]
-'bravo' ⟶   [ 'STR', "bravo" ]
 true ⟶   [ 'BOO', true ]
 false ⟶   [ 'BOO', false ]
 null ⟶   [ 'NUL' ]
+"alpha" ⟶   [ 'STR', "alpha" ]
+'bravo' ⟶   [ 'STR', "bravo" ]
+
+status:blue&false ⟶   ["AND", ["COL", "status", "blue"], ["BOO", false]]
+
+role:alpha&is:omega ⟶   \
+  ["AND", ["COL", "role", "alpha"], ["COL", "is", "omega"]]
+a:alpha&b:bravo|c:charly ⟶   \
+  ["OR", \
+    ["AND", ["COL", "a", "alpha"], ["COL", "b", "bravo"]], \
+    ["COL", "c", "charly"]]
 
 role:approver ⟶   [ 'COL', 'role', 'approver' ]
 
