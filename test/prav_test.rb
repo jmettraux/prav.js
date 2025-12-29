@@ -34,14 +34,14 @@ group 'prav.js' do
 
         test ">#{code}< does not parse" do
 
-          assert_nil @browser.eval("PravParser.parse(\"#{code}\")")
+          assert_nil @browser.eval("PravParser.parse(#{code.inspect})")
         end
 
       else
 
         test ">#{code}< parses" do
 
-          assert @browser.eval("PravParser.parse(\"#{code}\")"), eval(tree)
+          assert @browser.eval("PravParser.parse(#{code.inspect})"), eval(tree)
         end
       end
     end
