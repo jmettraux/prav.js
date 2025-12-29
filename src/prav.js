@@ -16,7 +16,7 @@ var PravParser = Jaabro.makeParser(function() {
   function pi(i) { return rex(null, i, /\|\s*/); }
   function co(i) { return rex(null, i, /:\s*/); }
 
-  function nul(i) { return rex('nul', i, /nul\s*/); }
+  function nul(i) { return rex('nul', i, /null\s*/); }
   function boo(i) { return rex('boo', i, /(false|true)\s*/); }
 
   function qstr(i) { return rex('qstr', i, /'(\\'|[^'])*'\s*/); }
@@ -43,6 +43,20 @@ var PravParser = Jaabro.makeParser(function() {
   function root(i) { return seq(null, i, cmp); }
 
   // rewrite
+
+  function rewrite_nul(t) { return [ 'NUL' ]; }
+
+  function rewrite_str(t) {
+    let s = t.string();
+    return [ 'STR', s.substr(1, s.length - 2) ]; }
+
+  function rewrite_boo(t) { return [ 'BOO', t.strinp() === 'true' ]; }
+
+  function rewrite_num(t) {
+    let s = t.strinp();
+    return [ 'NUM', s.indexOf('.') > -1 ? parseFloat(s) : parseInt(s, 10) ]; }
+
+  function rewrite_sca(t) { return rewrite(t.children[0]); }
 
   function rewrite_par(t) { return rewrite(t.children[1]); }
 

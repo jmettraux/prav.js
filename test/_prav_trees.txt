@@ -1,6 +1,14 @@
 
 12,000,1 ⟶   ∅  # does not parse
 
+12 ⟶   [ 'NUM', 12 ]
+12.12 ⟶   [ 'NUM', 12.12 ]
+"alpha" ⟶   [ 'STR', "alpha" ]
+'bravo' ⟶   [ 'STR', "bravo" ]
+true ⟶   [ 'BOO', true ]
+false ⟶   [ 'BOO', false ]
+null ⟶   [ 'NUL' ]
+
 role:approver ⟶   [ 'COL', 'role', 'approver' ]
 
 role:alpha&is:omega ⟶   \
