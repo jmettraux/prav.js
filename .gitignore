@@ -4,7 +4,7 @@ pkg/
 chrome.core
 
 *.swp
-.vim*
+.viminfo
 
 .probatio*
 .test-point

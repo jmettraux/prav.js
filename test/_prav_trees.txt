@@ -1,0 +1,7 @@
+
+12,000,1 ⟶   ∅  # does not parse
+
+alpha&omega ⟶   [ "num", "987" ]
+
+# vim: syntax=arrowy
+
