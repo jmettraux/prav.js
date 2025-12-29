@@ -29,12 +29,12 @@ var PravParser = Jaabro.makeParser(function() {
 
   function lab(i) { return rex('lab', i, /[a-z_][A-Za-z0-9_.]*\s*/); }
 
-  function col(i) { return seq('col', i, lab, co, lab); }
+  function pat(i) { return jseq('pat', i, lab, co); }
   function sca(i) { return alt('sca', i, num, str, boo, nul); }
 
   function par(i) { return seq('par', i, pa, cmp, pz); }
 
-  function exp(i) { return alt(null, i, par, col, sca); }
+  function exp(i) { return alt(null, i, par, sca, pat); }
 
   function adn(i) { return jseq('adn', i, exp, am); }
   function oro(i) { return jseq('oro', i, adn, pi); }
@@ -62,8 +62,11 @@ var PravParser = Jaabro.makeParser(function() {
 
   function rewrite_lab(t) { return t.strinp(); }
 
-  function rewrite_col(t) {
-    return [ 'COL', rewrite(t.children[0]), rewrite(t.children[2]) ]; }
+  function rewrite_pat(t) {
+    let r = [ 'PAT' ];
+    for (let i = 0, l = t.children.length; i < l; i = i + 2) {
+      r.push(rewrite(t.children[i])); }
+    return r; }
 
   function _rewrite_seq(head, t) {
     if (t.children.length === 1) return rewrite(t.children[0]);
