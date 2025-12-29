@@ -8,7 +8,9 @@
 group 'prav.js' do
 
   PRAV_TREES =
-    File.readlines('test/_prav_trees.txt')
+    File.read('test/_prav_trees.txt')
+      .gsub(/\\\n/, '')
+      .split("\n")
       .map(&:strip)
       .map { |l| m = l.match(/^(.*)(#.*)$/); m ? m[1].strip : l }
       .select { |l| l.length > 0 && l[0, 1] != '#' }
