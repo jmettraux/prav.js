@@ -5,6 +5,7 @@ chrome.core
 
 *.swp
 .viminfo
+.vimgrep
 
 .probatio*
 .test-point

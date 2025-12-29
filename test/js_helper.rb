@@ -12,6 +12,7 @@ require 'ferrum'
 class Probatio::Section
 
   UNGOOG = '/usr/local/bin/ungoogled-chromium'
+  JAABRO_JS = File.read('test/jaabro-1.4.1.js')
   PRAV_JS = File.read('src/prav.js')
 
   def make_browser
@@ -35,7 +36,9 @@ class Probatio::Section
 
       def eval(s)
 
-        evaluate(%{ function() { #{PRAV_JS}; return #{s.strip}; }(); })
+        evaluate(%{
+          function() { #{JAABRO_JS}; #{PRAV_JS}; return #{s.strip}; }();
+            }.strip)
       end
     end
 
