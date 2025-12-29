@@ -110,7 +110,9 @@ var Prav = (function() {
     return true; };
 
   EVALS.OR = function(cn, ctx) {
-    return true; };
+    for (let i = 0, l = cn.length; i < l; i++) {
+      if (_eval(cn[i], ctx)) return true; }
+    return false; };
 
   let _eval = function(tree, ctx) {
     let e; try { e = EVALS[tree[0]]; } catch(err) {}

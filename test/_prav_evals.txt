@@ -18,13 +18,15 @@ a:ok&false ⟶   { a: 'ok' } ⟶   false
 a:ok&true ⟶   { a: 'ok' } ⟶   true
 a:ok&true ⟶   { a: 'not ok' } ⟶   false
 
-#a:ok|true ⟶   { a: 'ok' } ⟶   true
-#a:ok|true ⟶   { a: 'not ok' } ⟶   true
-#a:ok|false ⟶   { a: 'ok' } ⟶   true
-#a:ok|false ⟶   { a: 'not ok' } ⟶   false
+a:ok|true ⟶   { a: 'ok' } ⟶   true
+a:ok|true ⟶   { a: 'not ok' } ⟶   true
+a:ok|false ⟶   { a: 'ok' } ⟶   true
+a:ok|false ⟶   { a: 'not ok' } ⟶   false
 
-#role:alpha&is:omega ⟶   \
-#  ["AND", ["PAT", "role", "alpha"], ["PAT", "is", "omega"]]
+role:alpha&is:omega ⟶   { role: 'alpha', is: 'omega' } ⟶   true
+role:alpha&is:omega ⟶   { role: 'alpha', is: 'alpha' } ⟶   false
+role:alpha&is:omega ⟶   { role: 'bravo', is: 'omega' } ⟶   false
+
 #a:alpha&b:bravo|c:charly ⟶   \
 #  ["OR", \
 #    ["AND", ["PAT", "a", "alpha"], ["PAT", "b", "bravo"]], \
