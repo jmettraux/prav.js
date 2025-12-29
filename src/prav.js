@@ -92,18 +92,21 @@ var Prav = (function() {
   //
   // protected functions
 
+  let isHash = function(x) { return (typeof x === 'object'); };
+
   const EVALS = {};
 
-  EVALS._ = function(tree, ctx) { return tree[1]; };
-  EVALS.BOO = EVALS._;
-  EVALS.NUM = EVALS._;
-  EVALS.STR = EVALS._;
-  EVALS.NUL = EVALS._;
+  EVALS.BOO = EVALS.NUM = EVALS.STR = EVALS.NUL =
+    function(tree, ctx) { return tree[1]; };
 
   EVALS.PAT = function(tree, ctx) {
-    return tree.slice(1).reduce(
-      function(x, key) { return x.hasOwnProperty(key) ? x[key] : false; },
-      ctx); };
+    let tl = tree.length;
+    let ks = tree.slice(1, tl - 1);
+    let r = ks.reduce(
+      function(x, k) { return isHash(x) && x.hasOwnProperty(k) ? x[k] : null; },
+      ctx);
+    return r === tree[tl - 1];
+  };
 
   EVALS.AND = function(tree, ctx) {
     return tree.slice(1).reduce(

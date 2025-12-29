@@ -32,7 +32,7 @@ group 'Prav' do
 
     PRAV_EVALS.each do |code, ctx, expected|
 
-      test ">#{code}< evaluates to #{expected}" do
+      test ">#{code}< with #{ctx} evaluates to #{expected}" do
 
         co = JSON.dump(code)
         ct = ctx
