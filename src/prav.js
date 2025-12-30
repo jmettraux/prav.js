@@ -137,6 +137,13 @@ var Prav = (function() {
       if (vs[i] <= vs[i + 1]) return false; }
     return true;
   }
+  EVALS.LT = function(cn, ctx) {
+    let vs = cn.map(function(c) { return _eval(c, ctx); });
+    if ( ! vs.every(isNum)) return false;
+    for (let i = 0, l = vs.length - 1; i < l; i++) {
+      if (vs[i] >= vs[i + 1]) return false; }
+    return true;
+  }
 
   let _eval = function(tree, ctx) {
     let e; try { e = EVALS[tree[0]]; } catch(err) {}
