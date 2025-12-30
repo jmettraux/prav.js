@@ -104,6 +104,9 @@ var Prav = (function() {
   //
   // protected functions
 
+  let isNum = function(v) {
+    return (typeof v === 'number'); };
+
   let fetch = function(h, k) {
     return (typeof h === 'object') && h.hasOwnProperty(k) && h[k]; };
 
@@ -129,9 +132,9 @@ var Prav = (function() {
 
   EVALS.GT = function(cn, ctx) {
     let vs = cn.map(function(c) { return _eval(c, ctx); });
+    if ( ! vs.every(isNum)) return false;
     for (let i = 0, l = vs.length - 1; i < l; i++) {
-      if (vs[i] <= vs[i + 1]) return false;
-    }
+      if (vs[i] <= vs[i + 1]) return false; }
     return true;
   }
 

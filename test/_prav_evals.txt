@@ -35,6 +35,12 @@ a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'b', c: 'c' } ⟶   false
 
 12 > 7 ⟶   true
 12 > 13 ⟶   false
+12 > false ⟶   false
+12 > true ⟶   false
+12 > 'abc' ⟶   false
+12 > 11.9 ⟶   true
+12 > 7 > 6 ⟶   true
+12 > 7 > 8 ⟶   false
 
 # vim: syntax=arrowy
 
