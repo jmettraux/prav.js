@@ -105,7 +105,7 @@ var Prav = (function() {
 
   this.VERSION = '1.0.0';
 
-  let self = this;
+  //let self = this;
 
   //
   // protected functions
