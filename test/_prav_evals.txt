@@ -10,6 +10,9 @@ null ⟶   nil
 role:approver ⟶   { role: 'traveller' } ⟶   false
 role:approver ⟶   { role: 'approver' } ⟶   true
 
+role ⟶   { role: 'traveller' } ⟶   'traveller'
+captain:age ⟶   { captain: { age: 33 } } ⟶   33
+
 path:to:target ⟶   { path: { to: { target: true } } } ⟶   true
 path:to:target ⟶   { path: { to: { nowhere: false } } } ⟶   false
 
