@@ -14,6 +14,8 @@ var PravParser = Jaabro.makeParser(function() {
   function pz(i) { return rex(null, i, /\)\s*/); }
   function lt(i) { return rex(null, i, /<\s*/); }
   function gt(i) { return rex(null, i, />\s*/); }
+  function le(i) { return rex(null, i, /<=\s*/); }
+  function ge(i) { return rex(null, i, />=\s*/); }
   function nq(i) { return rex(null, i, /!=\s*/); }
   function eq(i) { return rex(null, i, /==?\s*/); }
   function am(i) { return rex(null, i, /&\s*/); }
@@ -45,7 +47,9 @@ var PravParser = Jaabro.makeParser(function() {
 
   function lth(i) { return jseq('lth', i, oro, lt); }
   function gth(i) { return jseq('gth', i, lth, gt); }
-  function nqa(i) { return jseq('nqa', i, gth, nq); }
+  function lte(i) { return jseq('lte', i, gth, le); }
+  function gte(i) { return jseq('gte', i, lte, ge); }
+  function nqa(i) { return jseq('nqa', i, gte, nq); }
   function eqa(i) { return jseq('eqa', i, nqa, eq); }
 
   function root(i) { return seq(null, i, eqa); }
@@ -87,6 +91,8 @@ var PravParser = Jaabro.makeParser(function() {
 
   function rewrite_lth(t) { return _rewrite_seq('LT', t); }
   function rewrite_gth(t) { return _rewrite_seq('GT', t); }
+  function rewrite_lte(t) { return _rewrite_seq('LTE', t); }
+  function rewrite_gte(t) { return _rewrite_seq('GTE', t); }
   function rewrite_nqa(t) { return _rewrite_seq('NEQ', t); }
   function rewrite_eqa(t) { return _rewrite_seq('EQ', t); }
 
@@ -129,6 +135,21 @@ var Prav = (function() {
     for (let i = 0, l = cn.length; i < l; i++) {
       if (_eval(cn[i], ctx)) return true; }
     return false; };
+
+  EVALS.GTE = function(cn, ctx) {
+    let vs = cn.map(function(c) { return _eval(c, ctx); });
+    if ( ! vs.every(isNum)) return false;
+    for (let i = 0, l = vs.length - 1; i < l; i++) {
+      if (vs[i] < vs[i + 1]) return false; }
+    return true;
+  }
+  EVALS.LTE = function(cn, ctx) {
+    let vs = cn.map(function(c) { return _eval(c, ctx); });
+    if ( ! vs.every(isNum)) return false;
+    for (let i = 0, l = vs.length - 1; i < l; i++) {
+      if (vs[i] > vs[i + 1]) return false; }
+    return true;
+  }
 
   EVALS.GT = function(cn, ctx) {
     let vs = cn.map(function(c) { return _eval(c, ctx); });

@@ -52,5 +52,8 @@ a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'b', c: 'c' } ⟶   false
 12 < "not" ⟶   false
 12 < 12 ⟶   false
 
+12 >= 12 <= 12 ⟶   false
+  # because 12 >= true ⟶   false
+
 # vim: syntax=arrowy
 
