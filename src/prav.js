@@ -85,10 +85,10 @@ var PravParser = Jaabro.makeParser(function() {
   function rewrite_adn(t) { return _rewrite_seq('AND', t); }
   function rewrite_oro(t) { return _rewrite_seq('OR', t); }
 
-  function rewrite_lth(t) { return _rewrite_seq('LTH', t); }
-  function rewrite_gth(t) { return _rewrite_seq('GTH', t); }
-  function rewrite_nqa(t) { return _rewrite_seq('NQA', t); }
-  function rewrite_eqa(t) { return _rewrite_seq('EQA', t); }
+  function rewrite_lth(t) { return _rewrite_seq('LT', t); }
+  function rewrite_gth(t) { return _rewrite_seq('GT', t); }
+  function rewrite_nqa(t) { return _rewrite_seq('NEQ', t); }
+  function rewrite_eqa(t) { return _rewrite_seq('EQ', t); }
 
 }); // end PravParser
 
@@ -126,6 +126,14 @@ var Prav = (function() {
     for (let i = 0, l = cn.length; i < l; i++) {
       if (_eval(cn[i], ctx)) return true; }
     return false; };
+
+  EVALS.GT = function(cn, ctx) {
+    let vs = cn.map(function(c) { return _eval(c, ctx); });
+    for (let i = 0, l = vs.length - 1; i < l; i++) {
+      if (vs[i] <= vs[i + 1]) return false;
+    }
+    return true;
+  }
 
   let _eval = function(tree, ctx) {
     let e; try { e = EVALS[tree[0]]; } catch(err) {}
