@@ -37,6 +37,7 @@ var PravParser = Jaabro.makeParser(function() {
   function lab(i) { return rex('lab', i, /[a-z_][A-Za-z0-9_.]*\s*/); }
 
   function pat(i) { return jseq('pat', i, lab, co); }
+
   function sca(i) { return alt('sca', i, num, str, boo, nul); }
 
   function par(i) { return seq('par', i, pa, eqa, pz); }
@@ -110,7 +111,7 @@ var Prav = (function() {
 
   "use strict";
 
-  this.VERSION = '1.0.1';
+  this.VERSION = '1.1.0';
 
   //let self = this;
 
