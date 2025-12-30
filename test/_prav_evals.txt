@@ -68,5 +68,11 @@ a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'b', c: 'c' } ⟶   false
 !(true&false) ⟶   true
 !(true|false) ⟶   false
 
+!role:approver ⟶   { role: 'traveller' } ⟶   true
+!role:approver ⟶   { role: 'approver' } ⟶   false
+!(role:approver) ⟶   { role: 'traveller' } ⟶   true
+!(role:approver) ⟶   { role: 'approver' } ⟶   false
+! role:approver & ! role:launcher ⟶   { role: 'traveller' } ⟶   true
+
 # vim: syntax=arrowy
 
