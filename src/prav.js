@@ -7,11 +7,15 @@
 
 var PravParser = Jaabro.makeParser(function() {
 
+
   // parse
 
   function pa(i) { return rex(null, i, /\(\s*/); }
   function pz(i) { return rex(null, i, /\)\s*/); }
-  function cm(i) { return rex('cm', i, /(=|>|<|~)\s*/); }
+  function lt(i) { return rex(null, i, /<\s*/); }
+  function gt(i) { return rex(null, i, />\s*/); }
+  function nq(i) { return rex(null, i, /!=\s*/); }
+  function eq(i) { return rex(null, i, /==?\s*/); }
   function am(i) { return rex(null, i, /&\s*/); }
   function pi(i) { return rex(null, i, /\|\s*/); }
   function co(i) { return rex(null, i, /:\s*/); }
@@ -32,15 +36,20 @@ var PravParser = Jaabro.makeParser(function() {
   function pat(i) { return jseq('pat', i, lab, co); }
   function sca(i) { return alt('sca', i, num, str, boo, nul); }
 
-  function par(i) { return seq('par', i, pa, cmp, pz); }
+  function par(i) { return seq('par', i, pa, eqa, pz); }
 
   function exp(i) { return alt(null, i, par, sca, pat); }
 
   function adn(i) { return jseq('adn', i, exp, am); }
   function oro(i) { return jseq('oro', i, adn, pi); }
-  function cmp(i) { return jseq('cmp', i, oro, cm); }
 
-  function root(i) { return seq(null, i, cmp); }
+  function lth(i) { return jseq('lth', i, oro, lt); }
+  function gth(i) { return jseq('gth', i, lth, gt); }
+  function nqa(i) { return jseq('nqa', i, gth, nq); }
+  function eqa(i) { return jseq('eqa', i, nqa, eq); }
+
+  function root(i) { return seq(null, i, eqa); }
+
 
   // rewrite
 
@@ -75,7 +84,11 @@ var PravParser = Jaabro.makeParser(function() {
 
   function rewrite_adn(t) { return _rewrite_seq('AND', t); }
   function rewrite_oro(t) { return _rewrite_seq('OR', t); }
-  function rewrite_cmp(t) { return _rewrite_seq('CMP', t); } // FIXME ><=~ ...
+
+  function rewrite_lth(t) { return _rewrite_seq('LTH', t); }
+  function rewrite_gth(t) { return _rewrite_seq('GTH', t); }
+  function rewrite_nqa(t) { return _rewrite_seq('NQA', t); }
+  function rewrite_eqa(t) { return _rewrite_seq('EQA', t); }
 
 }); // end PravParser
 

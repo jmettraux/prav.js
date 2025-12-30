@@ -1,4 +1,3 @@
-
 12,000,1 ⟶   ∅  # does not parse
 
 12 ⟶   [ 'NUM', 12 ]
@@ -31,6 +30,16 @@ a:alpha&(b:bravo|c:charly) ⟶   \
   ["AND", \
     ["PAT", "a", "alpha"], \
     ["OR", ["PAT", "b", "bravo"], ["PAT", "c", "charly"]]]
+
+a>123 ⟶   ["GTH", ["PAT", "a"], ["NUM", 123]]
+a > 123 ⟶   ["GTH", ["PAT", "a"], ["NUM", 123]]
+12 < b < 123 ⟶   ["LTH", ["NUM", 12], ["PAT", "b"], ["NUM", 123]]
+
+12 < b > 12 ⟶   \
+  ["GTH", \
+    ["LTH", ["NUM", 12], ["PAT", "b"]], \
+    ["NUM", 12]]
+
 
 # vim: syntax=arrowy
 
