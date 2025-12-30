@@ -64,6 +64,10 @@ a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'b', c: 'c' } ⟶   false
 12 != 12 ⟶   false
 12 != 'douze' ⟶   true
 
+role:traveller ⟶   { role: 'traveller' } ⟶   true
+role = "traveller" ⟶   { role: 'traveller' } ⟶   true
+role == "traveller" ⟶   { role: 'traveller' } ⟶   true
+
 !false ⟶   true
 !(true&false) ⟶   true
 !(true|false) ⟶   false
