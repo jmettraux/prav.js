@@ -53,6 +53,10 @@ a > 123 ⟶   ["GT", ["PAT", "a"], ["NUM", 123]]
 !(true|false) ⟶   ["NOT", ["OR", ["BOO", true], ["BOO", false]]]
 a&!b ⟶   ["AND", ["PAT", "a"], ["NOT", ["PAT", "b"]]]
 
+role:*any ⟶   ["PAT", "role", "*any"]
+role:*none ⟶   ["PAT", "role", "*none"]
+
+role:*any:foo ⟶   ∅  # does not parse
 
 # vim: syntax=arrowy
 

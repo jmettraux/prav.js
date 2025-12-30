@@ -78,5 +78,12 @@ role == "traveller" ⟶   { role: 'traveller' } ⟶   true
 !(role:approver) ⟶   { role: 'approver' } ⟶   false
 ! role:approver & ! role:launcher ⟶   { role: 'traveller' } ⟶   true
 
+role:*any ⟶   { role: 'traveller' } ⟶   true
+role:*none ⟶   { role: 'traveller' } ⟶   false
+role:*any ⟶   { role: {} } ⟶   false
+role:*none ⟶   { role: {} } ⟶   true
+role:*any ⟶   { role: { traveller: true } } ⟶   true
+role:*none ⟶   { role: { traveller: true} } ⟶   false
+
 # vim: syntax=arrowy
 

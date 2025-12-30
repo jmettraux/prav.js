@@ -36,7 +36,9 @@ var PravParser = Jaabro.makeParser(function() {
 
   function lab(i) { return rex('lab', i, /[a-z_][A-Za-z0-9_.]*\s*/); }
 
-  function pat(i) { return jseq('pat', i, lab, co); }
+  function suff(i) { return rex('lab', i, /:\s*\*(any|none)\s*/); }
+  function labs(i) { return jseq(null, i, lab, co); }
+  function pat(i) { return seq('pat', i, labs, suff, '?'); }
 
   function sca(i) { return alt('sca', i, num, str, boo, nul); }
 
@@ -77,7 +79,8 @@ var PravParser = Jaabro.makeParser(function() {
 
   function rewrite_par(t) { return rewrite(t.children[1]); }
 
-  function rewrite_lab(t) { return t.strinp(); }
+  function rewrite_lab(t) {
+    let s = t.strinp(); return s.startsWith(':') ? s.substr(1) : s; }
 
   function rewrite_pat(t) {
     let r = [ 'PAT' ];
@@ -132,6 +135,19 @@ var Prav = (function() {
   EVALS.PAT = function(cn, ctx) {
     let rk = cn.pop();
     let v = cn.reduce(function(r, k) { return fetch(r, k); }, ctx);
+    //if (rk === '*any' || rk === '*none') return [ v, rk ];
+    if (rk === '*any') {
+      if (Array.isArray(v)) return v.length > 0;
+      if (typeof v === 'object') return Object.keys(v).length > 0;
+      if (v === null || v === undefined) return false;
+      return true;
+    }
+    if (rk === '*none') {
+      if (Array.isArray(v)) return v.length < 1;
+      if (typeof v === 'object') return Object.keys(v).length < 1;
+      if (v === null || v === undefined) return true;
+      return false;
+    }
     return v === rk || fetch(v, rk); };
 
   EVALS.AND = function(cn, ctx) {

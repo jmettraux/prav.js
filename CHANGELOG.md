@@ -4,6 +4,8 @@
 
 ## prav.js 1.1.0  not yet released
 
+* Introduce `*any` and `*none`
+
 
 ## prav.js 1.0.0  released 2025-12-30
 
