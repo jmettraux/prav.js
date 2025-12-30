@@ -64,5 +64,9 @@ a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'b', c: 'c' } ⟶   false
 12 != 12 ⟶   false
 12 != 'douze' ⟶   true
 
+!false ⟶   true
+!(true&false) ⟶   true
+!(true|false) ⟶   false
+
 # vim: syntax=arrowy
 

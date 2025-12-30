@@ -12,6 +12,7 @@ var PravParser = Jaabro.makeParser(function() {
 
   function pa(i) { return rex(null, i, /\(\s*/); }
   function pz(i) { return rex(null, i, /\)\s*/); }
+  function no(i) { return rex(null, i, /!\s*/); }
   function lt(i) { return rex(null, i, /<\s*/); }
   function gt(i) { return rex(null, i, />\s*/); }
   function le(i) { return rex(null, i, /<=\s*/); }
@@ -42,7 +43,9 @@ var PravParser = Jaabro.makeParser(function() {
 
   function exp(i) { return alt(null, i, par, sca, pat); }
 
-  function adn(i) { return jseq('adn', i, exp, am); }
+  function not(i) { return seq('not', i, no, '?', exp); }
+
+  function adn(i) { return jseq('adn', i, not, am); }
   function oro(i) { return jseq('oro', i, adn, pi); }
 
   function lth(i) { return jseq('lth', i, oro, lt); }
@@ -86,15 +89,19 @@ var PravParser = Jaabro.makeParser(function() {
     t.subgather().forEach(function(c) { r.push(rewrite(c)); });
     return r; }
 
-  function rewrite_adn(t) { return _rewrite_seq('AND', t); }
-  function rewrite_oro(t) { return _rewrite_seq('OR', t); }
+  function rewrite_adn(t) { return _rewrite_seq('AND', t); };
+  function rewrite_oro(t) { return _rewrite_seq('OR', t); };
 
-  function rewrite_lth(t) { return _rewrite_seq('LT', t); }
-  function rewrite_gth(t) { return _rewrite_seq('GT', t); }
-  function rewrite_lte(t) { return _rewrite_seq('LTE', t); }
-  function rewrite_gte(t) { return _rewrite_seq('GTE', t); }
-  function rewrite_nqa(t) { return _rewrite_seq('NEQ', t); }
-  function rewrite_eqa(t) { return _rewrite_seq('EQ', t); }
+  function rewrite_not(t) {
+    if (t.children.length === 1) return rewrite(t.children[0]);
+    return [ 'NOT', rewrite(t.children[1]) ]; };
+
+  function rewrite_lth(t) { return _rewrite_seq('LT', t); };
+  function rewrite_gth(t) { return _rewrite_seq('GT', t); };
+  function rewrite_lte(t) { return _rewrite_seq('LTE', t); };
+  function rewrite_gte(t) { return _rewrite_seq('GTE', t); };
+  function rewrite_nqa(t) { return _rewrite_seq('NEQ', t); };
+  function rewrite_eqa(t) { return _rewrite_seq('EQ', t); };
 
 }); // end PravParser
 
@@ -172,6 +179,9 @@ var Prav = (function() {
     for (let i = 0, l = vs.length - 1; i < l; i++) {
       if (vs[i] === vs[i + 1]) return false; }
     return true; };
+
+  EVALS.NOT = function(cn, ctx) {
+    return ! _eval(cn[0], ctx); };
 
   let _eval = function(tree, ctx) {
     let e; try { e = EVALS[tree[0]]; } catch(err) {}

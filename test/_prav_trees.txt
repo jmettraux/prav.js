@@ -49,6 +49,10 @@ a > 123 ⟶   ["GT", ["PAT", "a"], ["NUM", 123]]
 12 == 12 ⟶   ["EQ", ["NUM", 12], ["NUM", 12]]
 12 != 13 ⟶   ["NEQ", ["NUM", 12], ["NUM", 13]]
 
+!false ⟶   ["NOT", ["BOO", false]]
+!(true|false) ⟶   ["NOT", ["OR", ["BOO", true], ["BOO", false]]]
+a&!b ⟶   ["AND", ["PAT", "a"], ["NOT", ["PAT", "b"]]]
+
 
 # vim: syntax=arrowy
 
