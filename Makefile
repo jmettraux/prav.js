@@ -28,5 +28,9 @@ pkg: pkg_plain pkg_mini
 #	ruby -run -ehttpd spec/www/ -p8000
 #s: serve
 
-.PHONY: name test pkg serve
+doc:
+	ruby mak/document.rb
+
+
+.PHONY: name test pkg serve doc
 
