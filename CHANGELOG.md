@@ -4,6 +4,8 @@
 
 ## prav.js 1.2.0  not yet released
 
+* Unlock `role:2`, array indexing
+
 
 ## prav.js 1.1.0  released 2025-12-30
 

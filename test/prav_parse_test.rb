@@ -41,7 +41,13 @@ group 'PravParser' do
 
         test ">#{code}< parses" do
 
-          assert @browser.eval("PravParser.parse(#{code.inspect})"), eval(tree)
+          pp(
+            @browser.eval("PravParser.parse(#{code.inspect}, { debug: 2 })")
+          ) if @browser.eval("PravParser.parse(#{code.inspect})") != eval(tree)
+
+          assert(
+            @browser.eval("PravParser.parse(#{code.inspect})"),
+            eval(tree))
         end
       end
     end

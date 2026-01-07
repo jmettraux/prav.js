@@ -10,6 +10,9 @@ null ⟶   nil
 role:approver ⟶   { role: 'traveller' } ⟶   false
 role:approver ⟶   { role: 'approver' } ⟶   true
 
+roles:0 ⟶   { roles: [ 'launcher', 'approver' ] } ⟶   'launcher'
+roles:1 ⟶   { roles: [ 'launcher', 'approver' ] } ⟶   'approver'
+
 role ⟶   { role: 'traveller' } ⟶   'traveller'
 captain:age ⟶   { captain: { age: 33 } } ⟶   33
 

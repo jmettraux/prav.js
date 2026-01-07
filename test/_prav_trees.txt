@@ -10,6 +10,9 @@ null ⟶   [ 'NUL' ]
 
 role:approver ⟶   [ 'PAT', 'role', 'approver' ]
 path:to:target ⟶   [ 'PAT', 'path', 'to', 'target' ]
+path:to:123 ⟶   [ 'PAT', 'path', 'to', '123' ]
+Path:To:123 ⟶   [ 'PAT', 'Path', 'To', '123' ]
+Path:To.Room-Number:123 ⟶   [ 'PAT', 'Path', 'To.Room-Number', '123' ]
 
 status:blue&false ⟶   ["AND", ["PAT", "status", "blue"], ["BOO", false]]
 
