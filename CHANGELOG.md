@@ -2,7 +2,7 @@
 # prav.js
 
 
-## prav.js 1.2.0  not yet released
+## prav.js 1.2.0  released 2026-01-07
 
 * Unlock `role:2`, array indexing
 
