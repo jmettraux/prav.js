@@ -114,7 +114,7 @@ var Prav = (function() {
 
   "use strict";
 
-  this.VERSION = '1.1.1';
+  this.VERSION = '1.2.0';
 
   //let self = this;
 
