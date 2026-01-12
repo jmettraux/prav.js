@@ -4,6 +4,8 @@
 
 ## prav.js 1.2.1  not yet released
 
+* Fix `s:requested` when `ctx: { s: null }`
+
 
 ## prav.js 1.2.0  released 2026-01-07
 

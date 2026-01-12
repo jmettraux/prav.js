@@ -88,5 +88,17 @@ role:*none ⟶   { role: {} } ⟶   true
 role:*any ⟶   { role: { traveller: true } } ⟶   true
 role:*none ⟶   { role: { traveller: true} } ⟶   false
 
+s:requested ⟶   { s: null } ⟶   false
+s:requested ⟶   { s: undefined } ⟶   false
+s:requested ⟶   { s: 0 } ⟶   false
+s:requested ⟶   { s: 1 } ⟶   false
+s:requested ⟶   { s: true } ⟶   false
+s:requested ⟶   { s: false } ⟶   false
+s:requested ⟶   { s: "foo" } ⟶   false
+s:requested ⟶   { s: [] } ⟶   false
+s:requested ⟶   { s: {} } ⟶   false
+s:requested ⟶   { s: 'requested' } ⟶   true
+s:requested ⟶   { s: { requested: true } } ⟶   true
+
 # vim: syntax=arrowy
 

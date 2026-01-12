@@ -127,7 +127,11 @@ var Prav = (function() {
     return (typeof v === 'number'); };
 
   let fetch = function(h, k) {
-    return (typeof h === 'object') && h.hasOwnProperty(k) && h[k]; };
+    return (
+      (h !== null) &&
+      (typeof h === 'object') &&
+      h.hasOwnProperty(k) &&
+      h[k]); };
 
   const EVALS = {};
 
