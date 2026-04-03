@@ -1,7 +1,8 @@
 
 # prav.js
 
-## prav.js 1.2.2  not yet released
+
+## prav.js 1.2.2  released 2026-04-03
 
 * Trim the string input
 
