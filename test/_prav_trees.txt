@@ -56,6 +56,11 @@ a > 123 ⟶   ["GT", ["PAT", "a"], ["NUM", 123]]
 !(true|false) ⟶   ["NOT", ["OR", ["BOO", true], ["BOO", false]]]
 a&!b ⟶   ["AND", ["PAT", "a"], ["NOT", ["PAT", "b"]]]
 
+true|true&false ⟶   \
+  ["OR", ["BOO", true], ["AND", ["BOO", true], ["BOO", false]]]
+true&true|false ⟶   \
+  ["OR", ["AND", ["BOO", true], ["BOO", true]], ["BOO", false]]
+
 role:*any ⟶   ["PAT", "role", "*any"]
 role:*none ⟶   ["PAT", "role", "*none"]
 

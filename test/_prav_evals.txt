@@ -74,6 +74,8 @@ role == "traveller" ⟶   { role: 'traveller' } ⟶   true
 !false ⟶   true
 !(true&false) ⟶   true
 !(true|false) ⟶   false
+true|true&false ⟶   true
+true&true|false ⟶   true
 
 !role:approver ⟶   { role: 'traveller' } ⟶   true
 !role:approver ⟶   { role: 'approver' } ⟶   false
