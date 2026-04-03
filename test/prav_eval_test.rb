@@ -43,5 +43,13 @@ group 'Prav' do
       end
     end
   end
+
+  test 'trims the input' do
+
+    assert @browser.eval("Prav.eval('true', {})"), true
+    assert @browser.eval("Prav.eval(' true ', {})"), true
+    assert @browser.eval("Prav.eval(' \\ntrue \\n', {})"), true
+    assert @browser.eval("Prav.eval(' \\ntrue\\n & \\n false \\n', {})"), false
+  end
 end
 
