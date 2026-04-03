@@ -61,6 +61,11 @@ true|true&false ⟶   \
 true&true|false ⟶   \
   ["OR", ["AND", ["BOO", true], ["BOO", true]], ["BOO", false]]
 
+!false&!true|!false ⟶   \
+  ["OR", \
+    ["AND", ["NOT", ["BOO", false]], ["NOT", ["BOO", true]]], \
+    ["NOT", ["BOO", false]]]
+
 role:*any ⟶   ["PAT", "role", "*any"]
 role:*none ⟶   ["PAT", "role", "*none"]
 
