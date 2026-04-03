@@ -216,7 +216,7 @@ var Prav = (function() {
 
   this.parse = function(s) {
 
-    return PravParser.parse(s);
+    return PravParser.parse(s.trim());
   };
 
   this.eval = function(code, ctx) {

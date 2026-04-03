@@ -51,6 +51,29 @@ group 'PravParser' do
         end
       end
     end
+
+    test 'does strip the input' do
+
+      assert(
+        @browser.eval("Prav.parse('true')"),
+        [ 'BOO', true ])
+      assert(
+        @browser.eval("Prav.parse(' true ')"),
+        [ 'BOO', true ])
+      assert(
+        @browser.eval("Prav.parse('\\ntrue\\n')"),
+        [ 'BOO', true ])
+
+      assert(
+        @browser.eval("Prav.parse('\\ntrue|false\\n')"),
+        ["OR", ["BOO", true], ["BOO", false]])
+      assert(
+        @browser.eval("Prav.parse('\\ntrue\\n|false\\n')"),
+        ["OR", ["BOO", true], ["BOO", false]])
+      assert(
+        @browser.eval("Prav.parse('\\ntrue\\n|\\nfalse\\n')"),
+        ["OR", ["BOO", true], ["BOO", false]])
+    end
   end
 end
 

@@ -3,6 +3,8 @@
 
 ## prav.js 1.2.2  not yet released
 
+* Trim the string input
+
 
 ## prav.js 1.2.1  released 2026-01-12
 
