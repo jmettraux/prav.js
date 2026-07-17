@@ -1,4 +1,4 @@
 
 set viminfo+=n./.viminfo
-set runtimepath+=test/vim/
+"set runtimepath+=test/vim/
 
