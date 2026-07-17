@@ -102,5 +102,7 @@ s:requested ⟶   { s: {} } ⟶   false
 s:requested ⟶   { s: 'requested' } ⟶   true
 s:requested ⟶   { s: { requested: true } } ⟶   true
 
+
+# https://github.com/jmettraux/dotvim/blob/master/syntax/arrowy.vim
 # vim: syntax=arrowy
 
