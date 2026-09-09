@@ -16,4 +16,6 @@ chrome.core
 .openai.*.py
 .deep.md
 .deepseek.*
+.claude*
+.klaude*
 
