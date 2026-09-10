@@ -121,6 +121,11 @@ v='7' ⟶   { v: '7' } ⟶   true
 v='7.1' ⟶   { v: '7.1' } ⟶   true
 v>'7' ⟶   { v: '7.1' } ⟶   true
 
+name["foo" ⟶   { name: 'foo bar' } ⟶   true
+name]"bar" ⟶   { name: 'foo bar' } ⟶   true
+name["zoo" ⟶   { name: 'foo bar' } ⟶   false
+name]"baz" ⟶   { name: 'foo bar' } ⟶   false
+
 
 # https://github.com/jmettraux/dotvim/blob/master/syntax/arrowy.vim
 # vim: syntax=arrowy

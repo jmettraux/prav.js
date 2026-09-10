@@ -4,6 +4,7 @@
 
 ## prav.js 1.2.3  not yet released
 
+* Implement `var["7.1."` (startsWith) and `name]"bar" (endsWith)
 * Fix issue with strings followed by white space
 * Allow comparison of strings
 

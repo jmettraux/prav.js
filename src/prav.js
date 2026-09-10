@@ -22,6 +22,9 @@ var PravParser = Jaabro.makeParser(function() {
   function am(i) { return rex(null, i, /&\s*/); }
   function pi(i) { return rex(null, i, /\|\s*/); }
 
+  function sbo(i) { return rex(null, i, /\[\s*/); }
+  function sbc(i) { return rex(null, i, /\]\s*/); }
+
   function nul(i) { return rex('nul', i, /null\s*/); }
   function boo(i) { return rex('boo', i, /(false|true)\s*/); }
 
@@ -60,7 +63,10 @@ var PravParser = Jaabro.makeParser(function() {
   function nqa(i) { return jseq('nqa', i, gte, nq); }
   function eqa(i) { return jseq('eqa', i, nqa, eq); }
 
-  function root(i) { return seq(null, i, eqa); }
+  function stw(i) { return jseq('stw', i, eqa, sbo); }
+  function edw(i) { return jseq('edw', i, stw, sbc); }
+
+  function root(i) { return seq(null, i, edw); }
 
 
   // rewrite
@@ -108,6 +114,9 @@ var PravParser = Jaabro.makeParser(function() {
   function rewrite_gte(t) { return _rewrite_seq('GTE', t); };
   function rewrite_nqa(t) { return _rewrite_seq('NEQ', t); };
   function rewrite_eqa(t) { return _rewrite_seq('EQ', t); };
+
+  function rewrite_edw(t) { return _rewrite_seq('EDW', t); };
+  function rewrite_stw(t) { return _rewrite_seq('STW', t); };
 
 }); // end PravParser
 
@@ -201,6 +210,15 @@ var Prav = (function() {
     return false; };
 
   EVALS.NOT = function(cn, ctx) { return ! _eval(cn[0], ctx); };
+
+  EVALS.EDW = function(cn, ctx) {
+    let v0 = _eval(cn[0], ctx), v1 = _eval(cn[1], ctx);
+    return (isStr(v0) && isStr(v1)) ? v0.endsWith(v1) : false;
+  };
+  EVALS.STW = function(cn, ctx) {
+    let v0 = _eval(cn[0], ctx), v1 = _eval(cn[1], ctx);
+    return (isStr(v0) && isStr(v1)) ? v0.startsWith(v1) : false;
+  };
 
   //
   // public functions

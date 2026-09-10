@@ -100,6 +100,7 @@ Prav.eval("s:requested", { s: [] }) // --> false
 Prav.eval("s:requested", { s: {} }) // --> false
 Prav.eval("s:requested", { s: 'requested' }) // --> true
 Prav.eval("s:requested", { s: { requested: true } }) // --> true
+
 Prav.eval("v>'7.1'", { v: '7.2' }) // --> true
 Prav.eval("v>'7.1'", { v: '7.21' }) // --> true
 Prav.eval("v>'7.1'", { v: '7.12' }) // --> true
@@ -107,6 +108,11 @@ Prav.eval("v>'7.1'", { v: '7.0' }) // --> false
 Prav.eval("v='7'", { v: '7' }) // --> true
 Prav.eval("v='7.1'", { v: '7.1' }) // --> true
 Prav.eval("v>'7'", { v: '7.1' }) // --> true
+
+Prav.eval("name[\"foo\"", { name: 'foo bar' }) // --> true
+Prav.eval("name]\"bar\"", { name: 'foo bar' }) // --> true
+Prav.eval("name[\"zoo\"", { name: 'foo bar' }) // --> false
+Prav.eval("name]\"baz\"", { name: 'foo bar' }) // --> false
 ```
 
 
