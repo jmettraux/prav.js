@@ -15,6 +15,8 @@ Prav.eval("\"alpha\"", {}) // --> "alpha"
 Prav.eval("'bravo'", {}) // --> "bravo"
 Prav.eval("role:approver", { role: 'traveller' }) // --> false
 Prav.eval("role:approver", { role: 'approver' }) // --> true
+Prav.eval("roles:0", { roles: [ 'launcher', 'approver' ] }) // --> "launcher"
+Prav.eval("roles:1", { roles: [ 'launcher', 'approver' ] }) // --> "approver"
 Prav.eval("role", { role: 'traveller' }) // --> "traveller"
 Prav.eval("captain:age", { captain: { age: 33 } }) // --> 33
 Prav.eval("path:to:target", { path: { to: { target: true } } }) // --> true
@@ -41,6 +43,15 @@ Prav.eval("12 > 11.9", {}) // --> true
 Prav.eval("12 > 7 > 6", {}) // --> true
 Prav.eval("12 > 7 > 8", {}) // --> false
 Prav.eval("12 > 12", {}) // --> false
+Prav.eval("'abc' >= 'abc'", {}) // --> true
+Prav.eval("'abc' >= 'def'", {}) // --> false
+Prav.eval("'abc' > 'def'", {}) // --> false
+Prav.eval("'abc' < 'def'", {}) // --> true
+Prav.eval("'abc' <= 'def'", {}) // --> true
+Prav.eval("'abc' <= 'abc'", {}) // --> true
+Prav.eval("'abc'<='abc'", {}) // --> true
+Prav.eval("'abc' <='abc'", {}) // --> true
+Prav.eval("'abc'<= 'abc'", {}) // --> true
 Prav.eval("12 < 7", {}) // --> false
 Prav.eval("12 < 13", {}) // --> true
 Prav.eval("12 < 13 < 14.1", {}) // --> true
@@ -58,12 +69,15 @@ Prav.eval("12 == 13", {}) // --> false
 Prav.eval("12 == true", {}) // --> false
 Prav.eval("12 != 12", {}) // --> false
 Prav.eval("12 != 'douze'", {}) // --> true
+Prav.eval("12!='douze'", {}) // --> true
 Prav.eval("role:traveller", { role: 'traveller' }) // --> true
 Prav.eval("role = \"traveller\"", { role: 'traveller' }) // --> true
 Prav.eval("role == \"traveller\"", { role: 'traveller' }) // --> true
 Prav.eval("!false", {}) // --> true
 Prav.eval("!(true&false)", {}) // --> true
 Prav.eval("!(true|false)", {}) // --> false
+Prav.eval("true|true&false", {}) // --> true
+Prav.eval("true&true|false", {}) // --> true
 Prav.eval("!role:approver", { role: 'traveller' }) // --> true
 Prav.eval("!role:approver", { role: 'approver' }) // --> false
 Prav.eval("!(role:approver)", { role: 'traveller' }) // --> true
@@ -75,6 +89,24 @@ Prav.eval("role:*any", { role: {} }) // --> false
 Prav.eval("role:*none", { role: {} }) // --> true
 Prav.eval("role:*any", { role: { traveller: true } }) // --> true
 Prav.eval("role:*none", { role: { traveller: true} }) // --> false
+Prav.eval("s:requested", { s: null }) // --> false
+Prav.eval("s:requested", { s: undefined }) // --> false
+Prav.eval("s:requested", { s: 0 }) // --> false
+Prav.eval("s:requested", { s: 1 }) // --> false
+Prav.eval("s:requested", { s: true }) // --> false
+Prav.eval("s:requested", { s: false }) // --> false
+Prav.eval("s:requested", { s: "foo" }) // --> false
+Prav.eval("s:requested", { s: [] }) // --> false
+Prav.eval("s:requested", { s: {} }) // --> false
+Prav.eval("s:requested", { s: 'requested' }) // --> true
+Prav.eval("s:requested", { s: { requested: true } }) // --> true
+Prav.eval("v>'7.1'", { v: '7.2' }) // --> true
+Prav.eval("v>'7.1'", { v: '7.21' }) // --> true
+Prav.eval("v>'7.1'", { v: '7.12' }) // --> true
+Prav.eval("v>'7.1'", { v: '7.0' }) // --> false
+Prav.eval("v='7'", { v: '7' }) // --> true
+Prav.eval("v='7.1'", { v: '7.1' }) // --> true
+Prav.eval("v>'7'", { v: '7.1' }) // --> true
 ```
 
 
