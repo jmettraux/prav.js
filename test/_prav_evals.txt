@@ -46,6 +46,16 @@ a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'b', c: 'c' } ⟶   false
 12 > 7 > 8 ⟶   false
 12 > 12 ⟶   false
 
+'abc' >= 'abc' ⟶   true
+'abc' >= 'def' ⟶   false
+'abc' > 'def' ⟶   false
+'abc' < 'def' ⟶   true
+'abc' <= 'def' ⟶   true
+'abc' <= 'abc' ⟶   true
+'abc'<='abc' ⟶   true
+'abc' <='abc' ⟶   true
+'abc'<= 'abc' ⟶   true
+
 12 < 7 ⟶   false
 12 < 13 ⟶   true
 12 < 13 < 14.1 ⟶   true
@@ -66,6 +76,7 @@ a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'b', c: 'c' } ⟶   false
 12 == true ⟶   false
 12 != 12 ⟶   false
 12 != 'douze' ⟶   true
+12!='douze' ⟶   true
 
 role:traveller ⟶   { role: 'traveller' } ⟶   true
 role = "traveller" ⟶   { role: 'traveller' } ⟶   true

@@ -68,7 +68,7 @@ var PravParser = Jaabro.makeParser(function() {
   function rewrite_nul(t) { return [ 'NUL' ]; }
 
   function rewrite_str(t) {
-    let s = t.string();
+    let s = t.strinp();
     return [ 'STR', s.substr(1, s.length - 2) ]; }
 
   function rewrite_boo(t) { return [ 'BOO', t.strinp() === 'true' ]; }
@@ -123,15 +123,17 @@ var Prav = (function() {
   //
   // protected functions
 
-  let isNum = function(v) {
-    return (typeof v === 'number'); };
-
   let fetch = function(h, k) {
     return (
       (h !== null) &&
       (typeof h === 'object') &&
       h.hasOwnProperty(k) &&
       h[k]); };
+
+  let _eval = function(tree, ctx) {
+    let e; try { e = EVALS[tree[0]]; } catch(err) {}
+    if ( ! e) throw new Error(`Prav failed to eval ${JSON.stringify(tree)}`);
+    return e(tree.slice(1), ctx); };
 
   const EVALS = {};
 
@@ -166,50 +168,39 @@ var Prav = (function() {
       if (_eval(cn[i], ctx)) return true; }
     return false; };
 
-  EVALS.GTE = function(cn, ctx) {
+  let isNum = function(v) { return ((typeof v) === 'number'); };
+  let isStr = function(v) { return ((typeof v) === 'string'); };
+
+  let compare = function(a, b) {
+    if (isNum(a) && isNum(b)) return a - b;
+    if (isStr(a) && isStr(b)) return a.localeCompare(b);
+    return false; };
+
+  let compareCn = function(cn, ctx, f) {
     let vs = cn.map(function(c) { return _eval(c, ctx); });
-    if ( ! vs.every(isNum)) return false;
     for (let i = 0, l = vs.length - 1; i < l; i++) {
-      if (vs[i] < vs[i + 1]) return false; }
-    return true; };
-  EVALS.LTE = function(cn, ctx) {
-    let vs = cn.map(function(c) { return _eval(c, ctx); });
-    if ( ! vs.every(isNum)) return false;
-    for (let i = 0, l = vs.length - 1; i < l; i++) {
-      if (vs[i] > vs[i + 1]) return false; }
+      let r = compare(vs[i], vs[i + 1]);
+      if (r === false) return false;
+      if ( ! f(r)) return false;
+    }
     return true; };
 
-  EVALS.GT = function(cn, ctx) {
-    let vs = cn.map(function(c) { return _eval(c, ctx); });
-    if ( ! vs.every(isNum)) return false;
-    for (let i = 0, l = vs.length - 1; i < l; i++) {
-      if (vs[i] <= vs[i + 1]) return false; }
-    return true; };
-  EVALS.LT = function(cn, ctx) {
-    let vs = cn.map(function(c) { return _eval(c, ctx); });
-    if ( ! vs.every(isNum)) return false;
-    for (let i = 0, l = vs.length - 1; i < l; i++) {
-      if (vs[i] >= vs[i + 1]) return false; }
-    return true; };
+  EVALS.GTE = function(cn, ctx) { return compareCn(cn, ctx, r => r >= 0); };
+  EVALS.LTE = function(cn, ctx) { return compareCn(cn, ctx, r => r <= 0); };
+  EVALS.GT = function(cn, ctx) { return compareCn(cn, ctx, r => r > 0); };
+  EVALS.LT = function(cn, ctx) { return compareCn(cn, ctx, r => r < 0); };
 
-  EVALS.EQ = function(cn, ctx) {
-    let vs = cn.map(function(c) { return _eval(c, ctx); });
-    for (let i = 0, l = vs.length - 1; i < l; i++) {
-      if (vs[i] !== vs[i + 1]) return false; }
-    return true; };
+  EVALS.EQ = function(cn, ctx) { return compareCn(cn, ctx, r => r === 0); };
+
   EVALS.NEQ = function(cn, ctx) {
     let vs = cn.map(function(c) { return _eval(c, ctx); });
     for (let i = 0, l = vs.length - 1; i < l; i++) {
-      if (vs[i] === vs[i + 1]) return false; }
-    return true; };
+      let r = compare(vs[i], vs[i + 1]);
+      if (r === false || r !== 0) return true;
+    }
+    return false; };
 
-  EVALS.NOT = function(cn, ctx) {
-    return ! _eval(cn[0], ctx); };
-
-  let _eval = function(tree, ctx) {
-    let e; try { e = EVALS[tree[0]]; } catch(err) {}
-    if ( ! e) throw new Error(`Prav failed to eval ${JSON.stringify(tree)}`);
-    return e(tree.slice(1), ctx); };
+  EVALS.NOT = function(cn, ctx) { return ! _eval(cn[0], ctx); };
 
   //
   // public functions

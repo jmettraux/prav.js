@@ -4,6 +4,9 @@
 
 ## prav.js 1.2.3  not yet released
 
+* Fix issue with strings followed by white space
+* Allow comparison of strings
+
 
 ## prav.js 1.2.2  released 2026-04-03
 
