@@ -113,6 +113,14 @@ s:requested ⟶   { s: {} } ⟶   false
 s:requested ⟶   { s: 'requested' } ⟶   true
 s:requested ⟶   { s: { requested: true } } ⟶   true
 
+v>'7.1' ⟶   { v: '7.2' } ⟶   true
+v>'7.1' ⟶   { v: '7.21' } ⟶   true
+v>'7.1' ⟶   { v: '7.12' } ⟶   true
+v>'7.1' ⟶   { v: '7.0' } ⟶   false
+v='7' ⟶   { v: '7' } ⟶   true
+v='7.1' ⟶   { v: '7.1' } ⟶   true
+v>'7' ⟶   { v: '7.1' } ⟶   true
+
 
 # https://github.com/jmettraux/dotvim/blob/master/syntax/arrowy.vim
 # vim: syntax=arrowy
