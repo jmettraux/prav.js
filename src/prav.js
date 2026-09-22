@@ -22,6 +22,9 @@ var PravParser = Jaabro.makeParser(function() {
   function am(i) { return rex(null, i, /&\s*/); }
   function pi(i) { return rex(null, i, /\|\s*/); }
 
+  function az(i) { return rex(null, i, /=\s*/); }
+  function co(i) { return rex(null, i, /;\s*/); }
+
   function sbo(i) { return rex(null, i, /\[\s*/); }
   function sbc(i) { return rex(null, i, /\]\s*/); }
 
@@ -66,7 +69,9 @@ var PravParser = Jaabro.makeParser(function() {
   function stw(i) { return jseq('stw', i, eqa, sbo); }
   function edw(i) { return jseq('edw', i, stw, sbc); }
 
-  function root(i) { return seq(null, i, edw); }
+  function ass(i) { return seq('ass', i, pat, az, sca, co); }
+
+  function root(i) { return seq('root', i, ass, '*', edw); }
 
 
   // rewrite
@@ -117,6 +122,10 @@ var PravParser = Jaabro.makeParser(function() {
 
   function rewrite_edw(t) { return _rewrite_seq('EDW', t); };
   function rewrite_stw(t) { return _rewrite_seq('STW', t); };
+
+  function rewrite_ass(t) { return _rewrite_seq('ASS', t); };
+
+  function rewrite_root(t) { return _rewrite_seq('ROOT', t); };
 
 }); // end PravParser
 
@@ -218,6 +227,18 @@ var Prav = (function() {
   EVALS.STW = function(cn, ctx) {
     let v0 = _eval(cn[0], ctx), v1 = _eval(cn[1], ctx);
     return (isStr(v0) && isStr(v1)) ? v0.startsWith(v1) : false;
+  };
+
+  EVALS.ASS = function(cn, ctx) {
+    let k = cn[0][1], v = _eval(cn[1], ctx);
+    ctx[k] = v;
+    return v;
+  };
+
+  EVALS.ROOT = function(cn, ctx) {
+    let r;
+    for (let c of cn) { r = _eval(c, ctx); }
+    return r;
   };
 
   //
