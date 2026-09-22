@@ -2,7 +2,7 @@
 # prav.js
 
 
-## prav.js 1.2.3  not yet released
+## prav.js 1.2.3  released 2026-09-22
 
 * Implement `var["7.1."` (startsWith) and `name]"bar" (endsWith)
 * Fix issue with strings followed by white space
