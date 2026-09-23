@@ -136,7 +136,7 @@ var Prav = (function() {
 
   this.VERSION = '1.3.0';
 
-  //let self = this;
+  let self = this;
 
   //
   // protected functions
@@ -255,7 +255,14 @@ var Prav = (function() {
 
     if ( ! t) throw new Error(`Prav failed to parse >${code}<`);
 
-    return _eval(t, ctx);
+    let r = _eval(t, ctx);
+
+    if (ctx.debug) {
+      console.log('__', 'prav', self.VERSION, 't', t);
+      console.log('__', 'prav', self.VERSION, 'ctx', ctx);
+    }
+
+    return r;
   };
 
   //
