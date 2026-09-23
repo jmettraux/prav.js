@@ -2,7 +2,10 @@
 # prav.js
 
 
-## prav.js 1.3.0 not yet released
+## prav.js 1.3.0  released 2026-09-23
+
+* Introduce debug=1;
+* Introduce [pre] assignments
 
 
 ## prav.js 1.2.3  released 2026-09-22
