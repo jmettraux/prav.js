@@ -77,6 +77,12 @@ role:*none ⟶   ["PAT", "role", "*none"]
 
 role:*any:foo ⟶   ∅  # does not parse
 
+a=true;b=false;a ⟶   \
+  ["ROOT", \
+    ["ASS", ["PAT", "a"], ["BOO", true]], \
+    ["ASS", ["PAT", "b"], ["BOO", false]], \
+    ["PAT", "a"]]
+
 
 # https://github.com/jmettraux/dotvim/blob/master/syntax/arrowy.vim
 # vim: syntax=arrowy
