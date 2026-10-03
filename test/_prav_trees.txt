@@ -77,6 +77,9 @@ role:*none ⟶   ["PAT", "role", "*none"]
 
 role:*any:foo ⟶   ∅  # does not parse
 
+a:lol ⟶   ["PAT", "a", "lol"]
+a:*any ⟶   ["PAT", "a", "*any"]
+
 a=true;b=false;a ⟶   \
   ["ROOT", \
     ["ASS", ["PAT", "a"], ["BOO", true]], \

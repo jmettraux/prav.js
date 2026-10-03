@@ -141,12 +141,15 @@ var Prav = (function() {
   //
   // protected functions
 
+  let fetchFromArray = function(a, k) {
+    return k.match(/^\d+$/) ? a[k] : a.includes(k); };
+      //
+  let fetchFromObject = function(h, k) {
+    return h.hasOwnProperty(k) && h[k]; };
+      //
   let fetch = function(h, k) {
-    return (
-      (h !== null) &&
-      (typeof h === 'object') &&
-      h.hasOwnProperty(k) &&
-      h[k]); };
+    if (h === null || typeof h !== 'object') return false;
+    return Array.isArray(h) ? fetchFromArray(h, k) : fetchFromObject(h, k); };
 
   let _eval = function(tree, ctx) {
     let e; try { e = EVALS[tree[0]]; } catch(err) {}

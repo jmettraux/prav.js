@@ -4,6 +4,8 @@
 
 ## prav.js 1.4.0  not yet released
 
+* Yield true if an array includes the given key as a value
+
 
 ## prav.js 1.3.0  released 2026-09-23
 
