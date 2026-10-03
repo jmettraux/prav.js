@@ -9,6 +9,8 @@ null ⟶   [ 'NUL' ]
 'bravo' ⟶   [ 'STR', "bravo" ]
 'bravo'|"charly" ⟶   [ 'OR', [ 'STR', "bravo" ], [ 'STR', "charly" ] ]
 
+"foo {bar} baz" ⟶   [ 'STR', 'foo ', [ 'PAT', 'bar' ], ' baz' ]
+
 role:approver ⟶   [ 'PAT', 'role', 'approver' ]
 path:to:target ⟶   [ 'PAT', 'path', 'to', 'target' ]
 path:to:123 ⟶   [ 'PAT', 'path', 'to', '123' ]
@@ -79,6 +81,9 @@ role:*any:foo ⟶   ∅  # does not parse
 
 a:lol ⟶   ["PAT", "a", "lol"]
 a:*any ⟶   ["PAT", "a", "*any"]
+
+#h:"the bar" ⟶   ["PAT", "h", "the bar"]
+  # TODO
 
 a=true;b=false;a ⟶   \
   ["ROOT", \

@@ -81,6 +81,12 @@ a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'b', c: 'c' } ⟶   false
 role:traveller ⟶   { role: 'traveller' } ⟶   true
 role = "traveller" ⟶   { role: 'traveller' } ⟶   true
 role == "traveller" ⟶   { role: 'traveller' } ⟶   true
+"traveller" = "traveller" ⟶   {} ⟶   true
+"traveller" == "traveller" ⟶   {} ⟶   true
+
+"foo {bar} baz" = "foo BAR baz" ⟶   { bar: '' } ⟶   false
+"foo {bar} baz" = "foo BAR baz" ⟶   { bar: 'BAR' } ⟶   true
+"foo{ "{bar}{bar}" }baz" = "fooBARBARbaz" ⟶   { bar: 'BAR' } ⟶   true
 
 !false ⟶   true
 !(true&false) ⟶   true
