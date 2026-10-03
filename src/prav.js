@@ -23,7 +23,8 @@ var PravParser = Jaabro.makeParser(function() {
   function pi(i) { return rex(null, i, /\|\s*/); }
 
   function az(i) { return rex(null, i, /=\s*/); }
-  function co(i) { return rex(null, i, /;\s*/); }
+  function co(i) { return rex(null, i, /:\s*/); }
+  function sc(i) { return rex(null, i, /;\s*/); }
 
   function sbo(i) { return rex(null, i, /\[\s*/); }
   function sbc(i) { return rex(null, i, /\]\s*/); }
@@ -39,14 +40,11 @@ var PravParser = Jaabro.makeParser(function() {
     return rex('num', i,
       /-?(\.[0-9]+|([0-9]{1,3}(,[0-9]{3})+|[0-9]+)(\.[0-9]+)?)\s*/); }
 
-  function lab9(i) {
-    return rex('lab', i, /:\s*\*(any|none)\s*/); }
-  function lab1(i) {
-    return rex('lab', i, /:\s*[a-zA-Z0-9_][-a-zA-Z0-9_.]*\s*/); }
-  function lab0(i) {
-    return rex('lab', i, /[a-zA-Z_][-a-zA-Z0-9_.]*\s*/); }
+  function clab9(i) { return rex('lab', i, /:\s*\*(any|none)\s*/); }
+  function labc(i) { return rex('lab', i, /[-a-zA-Z0-9_.]+\s*/); }
+  function clab(i) { return seq(null, i, co, labc); }
 
-  function pat(i) { return seq('pat', i, lab0, lab1, '*', lab9, '?'); }
+  function pat(i) { return seq('pat', i, labc, clab, '*', clab9, '?'); }
 
   function sca(i) { return alt('sca', i, num, str, boo, nul); }
 
@@ -69,7 +67,7 @@ var PravParser = Jaabro.makeParser(function() {
   function stw(i) { return jseq('stw', i, eqa, sbo); }
   function edw(i) { return jseq('edw', i, stw, sbc); }
 
-  function ass(i) { return seq('ass', i, pat, az, sca, co); }
+  function ass(i) { return seq('ass', i, pat, az, sca, sc); }
 
   function root(i) { return seq('root', i, ass, '*', edw); }
 
