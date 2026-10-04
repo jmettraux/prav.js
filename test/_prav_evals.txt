@@ -159,6 +159,13 @@ h:a:*none ⟶   { h: { a: [ 'foo', 'bar', 'baz' ] } } ⟶   false
 h:a:*any ⟶   { h: { a: [] } } ⟶   false
 h:a:*none ⟶   { h: { a: [] } } ⟶   true
 
+n:*any ⟶   { n: 11 } ⟶   false
+n:*none ⟶   { n: 12 } ⟶   false
+s:*any ⟶   { s: '' } ⟶   false
+s:*none ⟶   { s: '' } ⟶   true
+s:*any ⟶   { s: 'aa' } ⟶   true
+s:*none ⟶   { s: 'bb' } ⟶   false
+
 a=true;b=false;a ⟶   {} ⟶   true
 a=0;a>1 ⟶   {} ⟶   false
 a=2;a>1 ⟶   { a: 0 } ⟶   true
