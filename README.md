@@ -61,6 +61,13 @@ Prav.eval("12 < true", {}) // --> false
 Prav.eval("12 < \"not\"", {}) // --> false
 Prav.eval("12 < 12", {}) // --> false
 Prav.eval("12 >= 12 <= 12", {}) // --> false
+Prav.eval("foo > 5", {}) // --> false
+Prav.eval("foo > 5", { foo: 3 }) // --> false
+Prav.eval("foo > 5", { foo: 6 }) // --> true
+Prav.eval("foo < 5", { foo: 3 }) // --> true
+Prav.eval("foo < 5", { foo: 6 }) // --> false
+Prav.eval("h:foo < 5", { h: { foo: 3 } }) // --> true
+Prav.eval("h:foo < 5", { h: { foo: 6 } }) // --> false
 Prav.eval("12 = 12", {}) // --> true
 Prav.eval("12 == 12", {}) // --> true
 Prav.eval("12 != 13", {}) // --> true
@@ -73,6 +80,21 @@ Prav.eval("12!='douze'", {}) // --> true
 Prav.eval("role:traveller", { role: 'traveller' }) // --> true
 Prav.eval("role = \"traveller\"", { role: 'traveller' }) // --> true
 Prav.eval("role == \"traveller\"", { role: 'traveller' }) // --> true
+Prav.eval("\"traveller\" = \"traveller\"", {}) // --> true
+Prav.eval("\"traveller\" == \"traveller\"", {}) // --> true
+Prav.eval("\"foo {bar} baz\" = \"foo BAR baz\"", { bar: '' }) // --> false
+Prav.eval("\"foo {bar} baz\" = \"foo BAR baz\"", { bar: 'BAR' }) // --> true
+Prav.eval("\"foo{ \"{bar}{bar}\" }baz\" = \"fooBARBARbaz\"", { bar: 'BAR' }) // --> true
+Prav.eval("role:\"approver\"", { role: 'approver' }) // --> true
+Prav.eval("role:\"the dude\"", { role: 'the dude' }) // --> true
+Prav.eval("role:\"app{rover}\"", { role: 'approver', rover: 'rover' }) // --> true
+Prav.eval("role:\"app{rover}\"", { role: 'approver', rover: 'random' }) // --> false
+Prav.eval("role:\"app{rover}\"", { role: 'applicant', rover: 'rover' }) // --> false
+Prav.eval("role:`the dude`", { role: 'the dude' }) // --> true
+Prav.eval("role:`app{rover}`", { role: 'applicant', rover: 'rover' }) // --> false
+Prav.eval("role:{blue}", { role: 'applicant', blue: 'approver' }) // --> false
+Prav.eval("role:{blue}", { role: 'applicant', blue: 'applicant' }) // --> true
+Prav.eval("role: { blue }", { role: 'applicant', blue: 'applicant' }) // --> true
 Prav.eval("!false", {}) // --> true
 Prav.eval("!(true&false)", {}) // --> true
 Prav.eval("!(true|false)", {}) // --> false
@@ -100,7 +122,6 @@ Prav.eval("s:requested", { s: [] }) // --> false
 Prav.eval("s:requested", { s: {} }) // --> false
 Prav.eval("s:requested", { s: 'requested' }) // --> true
 Prav.eval("s:requested", { s: { requested: true } }) // --> true
-
 Prav.eval("v>'7.1'", { v: '7.2' }) // --> true
 Prav.eval("v>'7.1'", { v: '7.21' }) // --> true
 Prav.eval("v>'7.1'", { v: '7.12' }) // --> true
@@ -108,11 +129,31 @@ Prav.eval("v>'7.1'", { v: '7.0' }) // --> false
 Prav.eval("v='7'", { v: '7' }) // --> true
 Prav.eval("v='7.1'", { v: '7.1' }) // --> true
 Prav.eval("v>'7'", { v: '7.1' }) // --> true
-
 Prav.eval("name[\"foo\"", { name: 'foo bar' }) // --> true
 Prav.eval("name]\"bar\"", { name: 'foo bar' }) // --> true
 Prav.eval("name[\"zoo\"", { name: 'foo bar' }) // --> false
 Prav.eval("name]\"baz\"", { name: 'foo bar' }) // --> false
+Prav.eval("a:baz", { a: [ 'foo', 'bar', 'baz' ] }) // --> true
+Prav.eval("a:lol", { a: [ 'foo', 'bar', 'baz' ] }) // --> false
+Prav.eval("a:*any", { a: [ 'foo', 'bar', 'baz' ] }) // --> true
+Prav.eval("a:*none", { a: [ 'foo', 'bar', 'baz' ] }) // --> false
+Prav.eval("a:*any", { a: [] }) // --> false
+Prav.eval("a:*none", { a: [] }) // --> true
+Prav.eval("h:a:foo", { h: { a: [ 'foo', 'bar', 'baz' ] } }) // --> true
+Prav.eval("h:a:lol", { h: { a: [ 'foo', 'bar', 'baz' ] } }) // --> false
+Prav.eval("h:a:*any", { h: { a: [ 'foo', 'bar', 'baz' ] } }) // --> true
+Prav.eval("h:a:*none", { h: { a: [ 'foo', 'bar', 'baz' ] } }) // --> false
+Prav.eval("h:a:*any", { h: { a: [] } }) // --> false
+Prav.eval("h:a:*none", { h: { a: [] } }) // --> true
+Prav.eval("n:*any", { n: 11 }) // --> false
+Prav.eval("n:*none", { n: 12 }) // --> false
+Prav.eval("s:*any", { s: '' }) // --> false
+Prav.eval("s:*none", { s: '' }) // --> true
+Prav.eval("s:*any", { s: 'aa' }) // --> true
+Prav.eval("s:*none", { s: 'bb' }) // --> false
+Prav.eval("a=true;b=false;a", {}) // --> true
+Prav.eval("a=0;a>1", {}) // --> false
+Prav.eval("a=2;a>1", { a: 0 }) // --> true
 ```
 
 ### Prav .escape(s) and .unescape(s)
