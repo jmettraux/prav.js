@@ -270,7 +270,7 @@ var Prav = (function() {
   };
 
   EVALS.ROOT = function(cn, ctx) {
-    let r;
+    let r = false;
     for (let c of cn) { r = _eval(c, ctx); }
     return r;
   };
