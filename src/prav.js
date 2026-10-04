@@ -178,16 +178,27 @@ var Prav = (function() {
     return e(tree.slice(1), ctx); };
 
   let fetchFromArray = function(a, k) {
+    if (k === '*any') return a.length > 0;
+    if (k === '*none') return a.length < 1;
     return k.match(/^\d+$/) ? a[k] : a.includes(k); };
       //
   let fetchFromObject = function(h, k) {
+    if (k === '*any') return Object.keys(h).length > 0;
+    if (k === '*none') return Object.keys(h).length < 1;
     return h.hasOwnProperty(k) && h[k]; };
+
+  let elseFetch = function(x, k) {
+    if (k === '*any') return x.length > 0;
+    if (k === '*none') return x.length < 1;
+    return x === k; };
       //
   let fetch = function(h, k, ctx) {
-    if (h === null || ! isObj(h)) return false;
     if (isArr(k)) k = _eval(k, ctx);
+    if (h === k) return true;
+    if (h === null || h === undefined) return false;
     if (isArr(h)) return fetchFromArray(h, k);
-    return fetchFromObject(h, k); };
+    if (isObj(h)) return fetchFromObject(h, k);
+    return elseFetch(h, k); };
 
   const EVALS = {};
 
@@ -200,26 +211,7 @@ var Prav = (function() {
       .join(''); };
 
   EVALS.PAT = function(cn, ctx) {
-
-    let rk = cn.pop();
-    if (isArr(rk)) rk = _eval(rk, ctx);
-
-    let v = cn.reduce(function(r, k) { return fetch(r, k, ctx); }, ctx);
-
-    if (rk === '*any') {
-      if (v === null || v === undefined) return false;
-      if (isArr(v)) return v.length > 0;
-      if (isObj(v)) return Object.keys(v).length > 0;
-      return true;
-    }
-    if (rk === '*none') {
-      if (v === null || v === undefined) return true;
-      if (isArr(v)) return v.length < 1;
-      if (isObj(v)) return Object.keys(v).length < 1;
-      return false;
-    }
-
-    return v === rk || fetch(v, rk, ctx); };
+    return cn.reduce(function(r, k) { return fetch(r, k, ctx); }, ctx); };
 
   EVALS.AND = function(cn, ctx) {
     for (let i = 0, l = cn.length; i < l; i++) {
