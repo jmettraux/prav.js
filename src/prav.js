@@ -27,6 +27,8 @@ var PravParser = Jaabro.makeParser(function() {
   function sc(i) { return rex(null, i, /;\s*/); }
 
   function dq(i) { return str(null, i, '"'); }
+  function sq(i) { return str(null, i, "'"); }
+
   function ba(i) { return rex(null, i, /\{\s*/); }
   function bz(i) { return str(null, i, '}'); }
 
@@ -39,13 +41,17 @@ var PravParser = Jaabro.makeParser(function() {
   function boo(i) { return rex('boo', i, /(false|true)\s*/); }
 
   function itr(i) { return seq('itr', i, ba, edw, bz); }
-  function txt(i) { return rex('txt', i, /(\\["{]|[^"{])+/); }
-  function toi(i) { return alt(null, i, txt, itr); }
-  function dqstr(i) { return seq('dqstr', i, dq, toi, '*', dq, ws); }
-
-  function qstr(i) { return rex('qstr', i, /'(\\'|[^'])*'\s*/); }
-  //function dqstr(i) { return rex('dqstr', i, /"(\\"|[^"])*"\s*/); }
-  function str(i) { return alt('str', i, dqstr, qstr); }
+    //
+  function dqtxt(i) { return rex('txt', i, /(\\["{]|[^"{])+/); }
+  function sqtxt(i) { return rex('txt', i, /(\\['{]|[^'{])+/); }
+    //
+  function dqtoi(i) { return alt(null, i, dqtxt, itr); }
+  function sqtoi(i) { return alt(null, i, sqtxt, itr); }
+    //
+  function dqstr(i) { return seq('qstr', i, dq, dqtoi, '*', dq, ws); }
+  function sqstr(i) { return seq('qstr', i, sq, sqtoi, '*', sq, ws); }
+    //
+  function str(i) { return alt(null, i, sqstr, dqstr); }
 
   function num(i) {
     return rex('num', i,
@@ -93,13 +99,8 @@ var PravParser = Jaabro.makeParser(function() {
 
   function rewrite_itr(t) { return rewrite(t.children[1]); }
   function rewrite_txt(t) { return t.string(); }
-  function rewrite_dqstr(t) { return _rewrite_seq('STR', t); }
 
-  function rewrite_qstr(t) {
-    let s = t.strinp();
-    return [ 'STR', s.substr(1, s.length - 2) ]; }
-
-  function rewrite_str(t) { return rewrite(t.children[0]); }
+  function rewrite_qstr(t) { return _rewrite_seq('STR', t); }
 
   function rewrite_boo(t) { return [ 'BOO', t.strinp() === 'true' ]; }
 
