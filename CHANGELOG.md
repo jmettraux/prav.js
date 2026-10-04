@@ -4,6 +4,7 @@
 
 ## prav.js 1.4.0  not yet released
 
+* Allow for `h:"foo bar"` and `h:"app${rover}"`
 * Introduce Prav .escape(s) and .unescape(s)
 * Yield true if an array includes the given key as a value
 

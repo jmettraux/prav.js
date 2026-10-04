@@ -88,6 +88,12 @@ role == "traveller" ⟶   { role: 'traveller' } ⟶   true
 "foo {bar} baz" = "foo BAR baz" ⟶   { bar: 'BAR' } ⟶   true
 "foo{ "{bar}{bar}" }baz" = "fooBARBARbaz" ⟶   { bar: 'BAR' } ⟶   true
 
+role:"approver" ⟶   { role: 'approver' } ⟶   true
+role:"the dude" ⟶   { role: 'the dude' } ⟶   true
+role:"app{rover}" ⟶   { role: 'approver', rover: 'rover' } ⟶   true
+role:"app{rover}" ⟶   { role: 'approver', rover: 'random' } ⟶   false
+role:"app{rover}" ⟶   { role: 'applicant', rover: 'rover' } ⟶   false
+
 !false ⟶   true
 !(true&false) ⟶   true
 !(true|false) ⟶   false

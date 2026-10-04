@@ -51,11 +51,12 @@ var PravParser = Jaabro.makeParser(function() {
     return rex('num', i,
       /-?(\.[0-9]+|([0-9]{1,3}(,[0-9]{3})+|[0-9]+)(\.[0-9]+)?)\s*/); }
 
-  function clab9(i) { return rex('lab', i, /:\s*\*(any|none)\s*/); }
-  function labc(i) { return rex('lab', i, /[-a-zA-Z0-9_.]+\s*/); }
-  function clab(i) { return seq(null, i, co, labc); }
-
-  function pat(i) { return seq('pat', i, labc, clab, '*', clab9, '?'); }
+  function lab(i) { return rex('nod', i, /[-a-zA-Z0-9_.]+\s*/); }
+  function patq(i) { return rex('nod', i, /:\s*\*(any|none)\s*/); }
+  function pnod(i) { return alt(null, i, lab, str); }
+  function path(i) { return jseq(null, i, pnod, co); }
+    //
+  function pat(i) { return seq('pat', i, path, patq, '?'); }
 
   function sca(i) { return alt('sca', i, num, str, boo, nul); }
 
@@ -85,6 +86,9 @@ var PravParser = Jaabro.makeParser(function() {
 
   // rewrite
 
+  let isArr = function(v) { return Array.isArray(v); };
+  let isStr = function(v) { return (typeof v) === 'string'; };
+
   function rewrite_nul(t) { return [ 'NUL' ]; }
 
   function rewrite_itr(t) { return rewrite(t.children[1]); }
@@ -107,12 +111,19 @@ var PravParser = Jaabro.makeParser(function() {
 
   function rewrite_par(t) { return rewrite(t.children[1]); }
 
-  function rewrite_lab(t) {
-    let s = t.strinp(); return s.startsWith(':') ? s.substr(1) : s; }
+  function rewrite_nod(t) {
+    let s = t.strinp();
+    return s.startsWith(':') ? s.substr(1) : s; }
 
   function rewrite_pat(t) {
     let r = [ 'PAT' ];
-    t.subgather().forEach(function(c) { r.push(rewrite(c)); });
+    t.subgather().forEach(function(c) {
+      let rc = rewrite(c);
+      if (isArr(rc) && rc.length == 2 && rc[0] === 'STR' && isStr(rc[1])) {
+        rc = rc[1];
+      }
+      r.push(rc);
+    });
     return r; }
 
   function _rewrite_seq(head, t) {
@@ -156,20 +167,27 @@ var Prav = (function() {
   //
   // protected functions
 
+  let isArr = function(v) { return Array.isArray(v); };
+  let isNum = function(v) { return (typeof v) === 'number'; };
+  let isObj = function(v) { return (typeof v) === 'object'; };
+  let isStr = function(v) { return (typeof v) === 'string'; };
+
+  let _eval = function(tree, ctx) {
+    let e; try { e = EVALS[tree[0]]; } catch(err) {}
+    if ( ! e) throw new Error(`Prav failed to eval ${JSON.stringify(tree)}`);
+    return e(tree.slice(1), ctx); };
+
   let fetchFromArray = function(a, k) {
     return k.match(/^\d+$/) ? a[k] : a.includes(k); };
       //
   let fetchFromObject = function(h, k) {
     return h.hasOwnProperty(k) && h[k]; };
       //
-  let fetch = function(h, k) {
-    if (h === null || typeof h !== 'object') return false;
-    return Array.isArray(h) ? fetchFromArray(h, k) : fetchFromObject(h, k); };
-
-  let _eval = function(tree, ctx) {
-    let e; try { e = EVALS[tree[0]]; } catch(err) {}
-    if ( ! e) throw new Error(`Prav failed to eval ${JSON.stringify(tree)}`);
-    return e(tree.slice(1), ctx); };
+  let fetch = function(h, k, ctx) {
+    if (h === null || ! isObj(h)) return false;
+    if (isArr(k)) k = _eval(k, ctx);
+    if (isArr(h)) return fetchFromArray(h, k);
+    return fetchFromObject(h, k); };
 
   const EVALS = {};
 
@@ -178,26 +196,30 @@ var Prav = (function() {
 
   EVALS.STR = function(cn, ctx) {
     return cn
-      .map(function(c) { return (typeof c === 'string') ? c : _eval(c, ctx); })
+      .map(function(c) { return isStr(c) ? c : _eval(c, ctx); })
       .join(''); };
 
   EVALS.PAT = function(cn, ctx) {
+
     let rk = cn.pop();
-    let v = cn.reduce(function(r, k) { return fetch(r, k); }, ctx);
-    //if (rk === '*any' || rk === '*none') return [ v, rk ];
+    if (isArr(rk)) rk = _eval(rk, ctx);
+
+    let v = cn.reduce(function(r, k) { return fetch(r, k, ctx); }, ctx);
+
     if (rk === '*any') {
-      if (Array.isArray(v)) return v.length > 0;
-      if (typeof v === 'object') return Object.keys(v).length > 0;
       if (v === null || v === undefined) return false;
+      if (isArr(v)) return v.length > 0;
+      if (isObj(v)) return Object.keys(v).length > 0;
       return true;
     }
     if (rk === '*none') {
-      if (Array.isArray(v)) return v.length < 1;
-      if (typeof v === 'object') return Object.keys(v).length < 1;
       if (v === null || v === undefined) return true;
+      if (isArr(v)) return v.length < 1;
+      if (isObj(v)) return Object.keys(v).length < 1;
       return false;
     }
-    return v === rk || fetch(v, rk); };
+
+    return v === rk || fetch(v, rk, ctx); };
 
   EVALS.AND = function(cn, ctx) {
     for (let i = 0, l = cn.length; i < l; i++) {
@@ -208,9 +230,6 @@ var Prav = (function() {
     for (let i = 0, l = cn.length; i < l; i++) {
       if (_eval(cn[i], ctx)) return true; }
     return false; };
-
-  let isNum = function(v) { return ((typeof v) === 'number'); };
-  let isStr = function(v) { return ((typeof v) === 'string'); };
 
   let compare = function(a, b) {
     if (isNum(a) && isNum(b)) return a - b;
@@ -293,7 +312,7 @@ var Prav = (function() {
 
   this.eval = function(code, ctx) {
 
-    let t = Array.isArray(code) ? code : this.parse(code);
+    let t = isArr(code) ? code : this.parse(code);
 
     if ( ! t) throw new Error(`Prav failed to parse >${code}<`);
 
