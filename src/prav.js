@@ -264,8 +264,27 @@ var Prav = (function() {
     return r;
   };
 
+  // [un]escapers
+
+  const ESCAPERS = {
+    '"': '&quot;',
+    "'": '&apos;',
+      };
+  const UNESCAPERS = Object.keys(ESCAPERS).reduce(
+    function(h, k) { h[ESCAPERS[k]] = k; return h; },
+    {});
+
   //
   // public functions
+
+  this.escape = function(s) {
+    for (let k in ESCAPERS) { s = s.replaceAll(k, ESCAPERS[k]); }
+    return s;
+  };
+  this.unescape = function(s) {
+    for (let k in UNESCAPERS) { s = s.replaceAll(k, UNESCAPERS[k]); }
+    return s;
+  };
 
   this.parse = function(s) {
 

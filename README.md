@@ -115,6 +115,16 @@ Prav.eval("name[\"zoo\"", { name: 'foo bar' }) // --> false
 Prav.eval("name]\"baz\"", { name: 'foo bar' }) // --> false
 ```
 
+### Prav .escape(s) and .unescape(s)
+
+```js
+Prav.escape("foo'bar") // --> "foo&apos;bar"
+Prav.escape('foo"bar') // --> "foo&quot;bar"
+
+Prav.unescape("foo&apos;bar") // --> "foo'bar"
+Prav.unescape("foo&quot;bar") // --> 'foo"bar'
+```
+
 
 ## Dependencies
 
