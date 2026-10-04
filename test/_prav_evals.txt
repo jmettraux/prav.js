@@ -68,6 +68,14 @@ a:alpha&(b:bravo|c:charly) ⟶   { a: 'alpha', b: 'b', c: 'c' } ⟶   false
 12 >= 12 <= 12 ⟶   false
   # because 12 >= true ⟶   false
 
+foo > 5 ⟶   {} ⟶   false
+foo > 5 ⟶   { foo: 3 } ⟶   false
+foo > 5 ⟶   { foo: 6 } ⟶   true
+foo < 5 ⟶   { foo: 3 } ⟶   true
+foo < 5 ⟶   { foo: 6 } ⟶   false
+h:foo < 5 ⟶   { h: { foo: 3 } } ⟶   true
+h:foo < 5 ⟶   { h: { foo: 6 } } ⟶   false
+
 12 = 12 ⟶   true
 12 == 12 ⟶   true
 12 != 13 ⟶   true

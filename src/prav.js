@@ -186,8 +186,9 @@ var Prav = (function() {
     if (k === '*any') return Object.keys(h).length > 0;
     if (k === '*none') return Object.keys(h).length < 1;
     return h.hasOwnProperty(k) && h[k]; };
-
+      //
   let elseFetch = function(x, k) {
+    //if ( ! isStr(x)) return false;
     if (k === '*any') return x.length > 0;
     if (k === '*none') return x.length < 1;
     return x === k; };
