@@ -53,7 +53,7 @@ var PravParser = Jaabro.makeParser(function() {
 
   function lab(i) { return rex('nod', i, /[-a-zA-Z0-9_.]+\s*/); }
   function patq(i) { return rex('nod', i, /:\s*\*(any|none)\s*/); }
-  function pnod(i) { return alt(null, i, lab, str); }
+  function pnod(i) { return alt(null, i, itr, lab, str); }
   function path(i) { return jseq(null, i, pnod, co); }
     //
   function pat(i) { return seq('pat', i, path, patq, '?'); }

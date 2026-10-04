@@ -85,6 +85,8 @@ a:*any ⟶   ["PAT", "a", "*any"]
 h:"the bar" ⟶   ["PAT", "h", "the bar"]
 h:"the {foo}bar" ⟶   ["PAT", "h", ["STR", "the ", ["PAT", "foo"], "bar"]]
 
+h:{foo} ⟶   ["PAT", "h", ["PAT", "foo"]]
+
 a=true;b=false;a ⟶   \
   ["ROOT", \
     ["ASS", ["PAT", "a"], ["BOO", true]], \

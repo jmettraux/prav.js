@@ -102,6 +102,10 @@ role:"app{rover}" ⟶   { role: 'approver', rover: 'rover' } ⟶   true
 role:"app{rover}" ⟶   { role: 'approver', rover: 'random' } ⟶   false
 role:"app{rover}" ⟶   { role: 'applicant', rover: 'rover' } ⟶   false
 
+role:{blue} ⟶   { role: 'applicant', blue: 'approver' } ⟶   false
+role:{blue} ⟶   { role: 'applicant', blue: 'applicant' } ⟶   true
+role: { blue } ⟶   { role: 'applicant', blue: 'applicant' } ⟶   true
+
 !false ⟶   true
 !(true&false) ⟶   true
 !(true|false) ⟶   false
