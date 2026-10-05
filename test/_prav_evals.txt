@@ -164,6 +164,12 @@ a:1 == "bar" ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   true
 a:1 == "baz" ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   false
 a:{uid} ⟶   { a: [ 'A' ], uid: 0 } ⟶   'A'
 a:{uid} ⟶   { a: [ 'A' ], uid: 1 } ⟶   nil
+a:{uid} ⟶   { a: [ 3005 ], uid: 3005 } ⟶   nil
+a:{uid} ⟶   { a: [ 3002 ], uid: 3005 } ⟶   nil
+a:{uid} ⟶   { a: [ '3005' ], uid: '3005' } ⟶   nil
+a:{uid} ⟶   { a: [ '3002' ], uid: '3005' } ⟶   nil
+h:{uid} ⟶   { h: { '3005': true }, uid: '3005' } ⟶   true
+h:{uid} ⟶   { h: { '3002': true }, uid: '3005' } ⟶   false
 
 h:a:foo ⟶   { h: { a: [ 'foo', 'bar', 'baz' ] } } ⟶   true
 h:a:lol ⟶   { h: { a: [ 'foo', 'bar', 'baz' ] } } ⟶   false
