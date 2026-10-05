@@ -159,6 +159,12 @@ a:*any ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   true
 a:*none ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   false
 a:*any ⟶   { a: [] } ⟶   false
 a:*none ⟶   { a: [] } ⟶   true
+
+a:1 == "bar" ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   true
+a:1 == "baz" ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   false
+a:{uid} ⟶   { a: [ 'A' ], uid: 0 } ⟶   'A'
+a:{uid} ⟶   { a: [ 'A' ], uid: 1 } ⟶   nil
+
 h:a:foo ⟶   { h: { a: [ 'foo', 'bar', 'baz' ] } } ⟶   true
 h:a:lol ⟶   { h: { a: [ 'foo', 'bar', 'baz' ] } } ⟶   false
 h:a:*any ⟶   { h: { a: [ 'foo', 'bar', 'baz' ] } } ⟶   true

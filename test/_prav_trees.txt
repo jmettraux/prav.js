@@ -82,6 +82,9 @@ role:*any:foo ⟶   ∅  # does not parse
 a:lol ⟶   ["PAT", "a", "lol"]
 a:*any ⟶   ["PAT", "a", "*any"]
 
+a:1 ⟶   ["PAT", "a", "1"]
+a:{uid} ⟶   ["PAT", "a", ["PAT", "uid"]]
+
 h:"the bar" ⟶   ["PAT", "h", "the bar"]
 h:"the {foo}bar" ⟶   ["PAT", "h", ["STR", "the ", ["PAT", "foo"], "bar"]]
 

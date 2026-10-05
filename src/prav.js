@@ -173,6 +173,7 @@ var Prav = (function() {
   // protected functions
 
   let isArr = function(v) { return Array.isArray(v); };
+  let isInt = function(v) { return Number.isInteger(v); };
   let isNum = function(v) { return (typeof v) === 'number'; };
   let isObj = function(v) { return (typeof v) === 'object'; };
   let isStr = function(v) { return (typeof v) === 'string'; };
@@ -185,7 +186,7 @@ var Prav = (function() {
   let fetchFromArray = function(a, k) {
     if (k === '*any') return a.length > 0;
     if (k === '*none') return a.length < 1;
-    return k.match(/^\d+$/) ? a[k] : a.includes(k); };
+    return (isInt(k) || k.match(/^\d+$/)) ? a[k] : a.includes(k); };
       //
   let fetchFromObject = function(h, k) {
     if (k === '*any') return Object.keys(h).length > 0;
