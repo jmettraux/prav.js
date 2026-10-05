@@ -54,20 +54,36 @@ group 'Prav' do
 
   group 'assignments modify the context' do
 
-    { 'a=1;a' => { 'a' => 1 },
+    {
+
+      'a=1;a' => { 'a' => 1 },
       'a = 2; a' => { 'a' => 2 },
       'a = true; a' => { 'a' => true },
       'a = `a`; a' => { 'a' => 'a' },
+
+      'a = "{11}"; a' => { 'a' => '11' },
+      'a = {12}; a' => { 'a' => 12 },
+
+      [ 'a = {b}; a', { b: 9 } ] => { 'a' => 9, 'b' => 9 },
 
     }.each do |k, v|
 
       test "#{k.inspect} leaves #{v.inspect}" do
 
-        assert(
-          @browser.eval(
-            "(function() { ctx = {}; Prav.eval('#{k}', ctx); " +
-            "return ctx; })()"),
-          v)
+        if k.is_a?(Array)
+          k, x = k
+          assert(
+            @browser.eval(
+              "(function() { ctx = #{x.inspect}; Prav.eval('#{k}', ctx); " +
+              "return ctx; })()"),
+            v)
+        else
+          assert(
+            @browser.eval(
+              "(function() { ctx = {}; Prav.eval('#{k}', ctx); " +
+              "return ctx; })()"),
+            v)
+        end
       end
     end
   end

@@ -89,7 +89,9 @@ var PravParser = Jaabro.makeParser(function() {
   function stw(i) { return jseq('stw', i, eqa, sbo); }
   function edw(i) { return jseq('edw', i, stw, sbc); }
 
-  function ass(i) { return seq('ass', i, pat, az, sca, sc); }
+  function ios(i) { return alt(null, i, itr, sca); }
+
+  function ass(i) { return seq('ass', i, pat, az, ios, sc); }
 
   function root(i) { return seq('root', i, ass, '*', edw); }
 
@@ -165,7 +167,7 @@ var Prav = (function() {
 
   "use strict";
 
-  this.VERSION = '1.4.0';
+  this.VERSION = '1.4.1';
 
   let self = this;
 

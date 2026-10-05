@@ -188,6 +188,8 @@ s:*none ⟶   { s: 'bb' } ⟶   false
 a=true;b=false;a ⟶   {} ⟶   true
 a=0;a>1 ⟶   {} ⟶   false
 a=2;a>1 ⟶   { a: 0 } ⟶   true
+a={b};a>1 ⟶   { b: 2 } ⟶   true
+a={b};a>1 ⟶   { b: 0 } ⟶   false
 
 # https://github.com/jmettraux/dotvim/blob/master/syntax/arrowy.vim
 # vim: syntax=arrowy
