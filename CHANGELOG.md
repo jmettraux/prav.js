@@ -2,7 +2,7 @@
 # prav.js
 
 
-## prav.js 1.4.0  not yet released
+## prav.js 1.4.0  released 2026-10-05
 
 * Allow for `h:"foo bar"` and `h:"app${rover}"`
 * Introduce Prav .escape(s) and .unescape(s)
