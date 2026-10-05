@@ -51,5 +51,25 @@ group 'Prav' do
     assert @browser.eval("Prav.eval(' \\ntrue \\n', {})"), true
     assert @browser.eval("Prav.eval(' \\ntrue\\n & \\n false \\n', {})"), false
   end
+
+  group 'assignments modify the context' do
+
+    { 'a=1;a' => { 'a' => 1 },
+      'a = 2; a' => { 'a' => 2 },
+      'a = true; a' => { 'a' => true },
+      'a = `a`; a' => { 'a' => 'a' },
+
+    }.each do |k, v|
+
+      test "#{k.inspect} leaves #{v.inspect}" do
+
+        assert(
+          @browser.eval(
+            "(function() { ctx = {}; Prav.eval('#{k}', ctx); " +
+            "return ctx; })()"),
+          v)
+      end
+    end
+  end
 end
 
