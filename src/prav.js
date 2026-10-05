@@ -62,7 +62,7 @@ var PravParser = Jaabro.makeParser(function() {
       /-?(\.[0-9]+|([0-9]{1,3}(,[0-9]{3})+|[0-9]+)(\.[0-9]+)?)\s*/); }
 
   function lab(i) { return rex('nod', i, /[-a-zA-Z0-9_.]+\s*/); }
-  function patq(i) { return rex('nod', i, /:\s*\*(any|none)\s*/); }
+  function patq(i) { return rex('nod', i, /:\s*\*(any|none|length)\s*/); }
   function pnod(i) { return alt(null, i, itr, lab, str); }
   function path(i) { return jseq(null, i, pnod, co); }
     //
@@ -188,17 +188,20 @@ var Prav = (function() {
   let fetchFromArray = function(a, k) {
     if (k === '*any') return a.length > 0;
     if (k === '*none') return a.length < 1;
+    if (k === '*length') return a.length;
     return (isInt(k) || k.match(/^\d+$/)) ? a[k] : a.includes(k); };
       //
   let fetchFromObject = function(h, k) {
     if (k === '*any') return Object.keys(h).length > 0;
     if (k === '*none') return Object.keys(h).length < 1;
+    if (k === '*length') return Object.keys(h).length;
     return h.hasOwnProperty(k) && h[k]; };
       //
   let elseFetch = function(x, k) {
     //if ( ! isStr(x)) return false;
     if (k === '*any') return x.length > 0;
     if (k === '*none') return x.length < 1;
+    if (k === '*length') return x.length;
     return x === k; };
       //
   let fetch = function(h, k, ctx) {

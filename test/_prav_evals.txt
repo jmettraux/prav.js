@@ -127,7 +127,7 @@ role:*none ⟶   { role: 'traveller' } ⟶   false
 role:*any ⟶   { role: {} } ⟶   false
 role:*none ⟶   { role: {} } ⟶   true
 role:*any ⟶   { role: { traveller: true } } ⟶   true
-role:*none ⟶   { role: { traveller: true} } ⟶   false
+role:*none ⟶   { role: { traveller: true } } ⟶   false
 
 s:requested ⟶   { s: null } ⟶   false
 s:requested ⟶   { s: undefined } ⟶   false
@@ -160,6 +160,18 @@ a:*any ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   true
 a:*none ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   false
 a:*any ⟶   { a: [] } ⟶   false
 a:*none ⟶   { a: [] } ⟶   true
+
+roles:*length ⟶   { roles: {} } ⟶   0
+roles:*length ⟶   { roles: [] } ⟶   0
+roles:*length ⟶   { roles: { traveller: true } } ⟶   1
+roles:*length ⟶   { roles: [ 'traveller', true ] } ⟶   2
+roles:*length > 0 ⟶   { roles: [ 'traveller', true ] } ⟶   true
+roles:*length ⟶   { roles: 'traveller and singer' } ⟶   20
+
+#*any ⟶   {} ⟶   false
+#*none ⟶   {} ⟶   true
+#*length ⟶   {} ⟶   0
+  # TODO
 
 a:1 == "bar" ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   true
 a:1 == "baz" ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   false

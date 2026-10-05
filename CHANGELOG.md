@@ -4,6 +4,7 @@
 
 ## prav.js 1.4.1  not yet released
 
+* Introduce `a:*length`
 * Allow for interpolation in assignments
 
 
