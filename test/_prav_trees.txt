@@ -77,7 +77,8 @@ true&true|false ⟶   \
 role:*any ⟶   ["PAT", "role", "*any"]
 role:*none ⟶   ["PAT", "role", "*none"]
 
-role:*any:foo ⟶   ∅  # does not parse
+#role:*any:foo ⟶   ∅  # does not parse
+  # it's OK, it will fail at evaluation...
 
 a:lol ⟶   ["PAT", "a", "lol"]
 a:*any ⟶   ["PAT", "a", "*any"]

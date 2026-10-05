@@ -168,10 +168,11 @@ roles:*length ⟶   { roles: [ 'traveller', true ] } ⟶   2
 roles:*length > 0 ⟶   { roles: [ 'traveller', true ] } ⟶   true
 roles:*length ⟶   { roles: 'traveller and singer' } ⟶   20
 
-#*any ⟶   {} ⟶   false
-#*none ⟶   {} ⟶   true
-#*length ⟶   {} ⟶   0
-  # TODO
+*any ⟶   {} ⟶   false
+*none ⟶   {} ⟶   true
+*length ⟶   {} ⟶   0
+
+*foo ⟶   {} ⟶   false
 
 a:1 == "bar" ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   true
 a:1 == "baz" ⟶   { a: [ 'foo', 'bar', 'baz' ] } ⟶   false
