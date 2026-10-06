@@ -320,6 +320,13 @@ var Prav = (function() {
     return PravParser.parse(s.trim());
   };
 
+  this.compile = function(s) {
+
+    let t = self.parse(s);
+
+    return function(ctx) { return self.eval(t, ctx); };
+  };
+
   this.eval = function(code, ctx) {
 
     let t = isArr(code) ? code : this.parse(code);

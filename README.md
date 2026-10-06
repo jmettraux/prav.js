@@ -171,6 +171,16 @@ Prav.eval('h:*fun', { b: 'beta', h: { fun: function(x, ctx) { return x.b || ctx.
 Note that `*any`, `*none`, and `*length` have priority, they cannot be overriden by more "local" function bindings.
 
 
+### Prav .compile(src)
+
+```js
+f = Prav.compile('h:a')
+
+f({ h: { a: 'alpha' } }) // --> 'alpha'
+f({ h: { a: 'alice' } }) // --> 'alice'
+```
+
+
 ### Prav .escape(s) and .unescape(s)
 
 ```js

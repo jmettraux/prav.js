@@ -4,6 +4,7 @@
 
 ## prav.js 1.5.0  not yet released
 
+* Introduce Prav.compile(src)
 * Introduce `a:*length`
 * Allow for interpolation in assignments
 * Unlock custom functions
