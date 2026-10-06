@@ -87,5 +87,40 @@ group 'Prav' do
       end
     end
   end
+
+  group 'custom functions' do
+
+    test 'they work from ctx' do
+
+      code = %{ *f
+        }.strip
+      ctx = %{ { f: function(x, ctx) { return 'world'; } }
+        }.strip
+
+      assert(
+        @browser.eval("Prav.parse('#{code}')"),
+        [ 'PAT', '*f' ])
+
+      assert(
+        @browser.eval("Prav.eval('#{code}', #{ctx})"),
+        'world')
+    end
+
+    test 'they work from x' do
+
+      code = %{ h:*f
+        }.strip
+      ctx = %{ { b: 'b', h: { b: 'B', f: function(x, ctx) { return x.b; } } }
+        }.strip
+
+      assert(
+        @browser.eval("Prav.parse('#{code}')"),
+        [ 'PAT', 'h', '*f' ])
+
+      assert(
+        @browser.eval("Prav.eval('#{code}', #{ctx})"),
+        'B')
+    end
+  end
 end
 

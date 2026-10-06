@@ -164,47 +164,56 @@ var Prav = (function() {
 
   "use strict";
 
-  this.VERSION = '1.4.1';
+  this.VERSION = '1.5.0';
 
   let self = this;
 
   //
   // protected functions
 
-  let isArr = function(v) { return Array.isArray(v); };
-  let isInt = function(v) { return Number.isInteger(v); };
-  let isNum = function(v) { return (typeof v) === 'number'; };
-  let isObj = function(v) { return (typeof v) === 'object'; };
-  let isStr = function(v) { return (typeof v) === 'string'; };
-
   let _eval = function(tree, ctx) {
     let e; try { e = EVALS[tree[0]]; } catch(err) {}
     if ( ! e) throw new Error(`Prav failed to eval ${JSON.stringify(tree)}`);
     return e(tree.slice(1), ctx); };
 
+  let isArr = function(v) { return Array.isArray(v); };
+  let isInt = function(v) { return Number.isInteger(v); };
+  let isNum = function(v) { return (typeof v) === 'number'; };
+  let isObj = function(v) { return (typeof v) === 'object'; };
+  let isStr = function(v) { return (typeof v) === 'string'; };
+  let isFun = function(v) { return (typeof v) === 'function'; };
+
+  let len = function(x) { return isObj(x) ? Object.keys(x).length : x.length; }
+
+  const CORE_FUNS = {};
+  CORE_FUNS.any = function(x, ctx) { return len(x) > 0; };
+  CORE_FUNS.none = function(x, ctx) { return len(x) < 1; };
+  CORE_FUNS.length = function(x, ctx) { return len(x); };
+
+  let fetchViaFunction = function(x, k, ctx) {
+    let fn = k.slice(1);
+    let f = CORE_FUNS[fn] || x[fn] || ctx[fn];
+    return isFun(f) ? f(x, ctx) : false; };
+      //
   let fetchFromArray = function(a, k) {
-    if (k === '*any') return a.length > 0;
-    if (k === '*none') return a.length < 1;
-    if (k === '*length') return a.length;
     return (isInt(k) || k.match(/^\d+$/)) ? a[k] : a.includes(k); };
       //
   let fetchFromObject = function(h, k) {
-    if (k === '*any') return Object.keys(h).length > 0;
-    if (k === '*none') return Object.keys(h).length < 1;
-    if (k === '*length') return Object.keys(h).length;
     return h.hasOwnProperty(k) && h[k]; };
       //
   let elseFetch = function(x, k) {
-    //if ( ! isStr(x)) return false;
-    if (k === '*any') return x.length > 0;
-    if (k === '*none') return x.length < 1;
-    if (k === '*length') return x.length;
     return x === k; };
       //
   let fetch = function(h, k, ctx) {
+
     if (isArr(k)) k = _eval(k, ctx);
+
     if (h === k) return true;
     if (h === null || h === undefined) return false;
+
+    if (isStr(k) && k.match(/^\*[a-z][a-zA-Z0-9_]*$/))
+      return fetchViaFunction(h, k, ctx);
+
     if (isArr(h)) return fetchFromArray(h, k);
     if (isObj(h)) return fetchFromObject(h, k);
     return elseFetch(h, k); };

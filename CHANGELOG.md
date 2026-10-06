@@ -2,10 +2,11 @@
 # prav.js
 
 
-## prav.js 1.4.1  not yet released
+## prav.js 1.5.0  not yet released
 
 * Introduce `a:*length`
 * Allow for interpolation in assignments
+* Unlock custom functions
 
 
 ## prav.js 1.4.0  released 2026-10-05

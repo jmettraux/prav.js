@@ -156,6 +156,21 @@ Prav.eval("a=0;a>1", {}) // --> false
 Prav.eval("a=2;a>1", { a: 0 }) // --> true
 ```
 
+
+### custom functions
+
+```js
+Prav.eval('*f', { f: function(x, ctx) { return 'world' } });
+  // --> "world"
+Prav.eval('h:*f', { h: { b: 'Bravo', f: function(x, ctx) { return x.b; } });
+  // --> "Bravo"
+Prav.eval('h:*fun', { b: 'beta', h: { fun: function(x, ctx) { return x.b || ctx.b; } });
+  // --> "beta"
+```
+
+Note that `*any`, `*none`, and `*length` have priority, they cannot be overriden by more "local" function bindings.
+
+
 ### Prav .escape(s) and .unescape(s)
 
 ```js
